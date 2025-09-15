@@ -1,0 +1,214 @@
+<div class="row g-4">
+    <div class="col-12 col-md-8">
+        <h3>Delete</h3>
+        <ul class="sidebar-ul">
+            <li class="sidebar-li">
+                <button id="da-launcher" class="btn btn-outline-danger w-100">Delete All Launchers</button>
+            </li>
+
+            <li class="sidebar-li">
+                <button id="da-bookmark" class="btn btn-outline-danger w-100">Delete All Bookmarks</button>
+            </li>
+
+            <li class="sidebar-li">
+                <button id="da-index" class="btn btn-outline-danger w-100">Delete All Indexes</button>
+            </li>
+        </ul>
+        <hr class="px-2">
+        <h3>Import Bookmarks</h3>
+        <form id="bookmarkForm" class="px-2">
+            <div class="text-center">
+                <input class="form-control form-control-lg file-input" type="file" id="formFile" />
+                {{!-- <label for="formFile" class="btn btn-dark w-100">Import Bookmarks (HTML format)</label> --}}
+            </div>
+            
+            <div>
+                <progress id="progressBar" class="w-100" value="0" max="100"></progress>
+                <textarea class="form-control" id="links" name="links" rows="12" placeholder="" disabled></textarea>
+                <div class="text-end">
+                    <div class="row">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-dark w-100">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-12 col-md-4 border-separator">
+        <h3 class="text-danger">WARNING!</h3>
+        <p>These red buttons will delete your Rumput data permanently. Don't click them unless you know what you are doing.</p>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#da-launcher").click(function () {
+            if (confirm("WARNING! Your launcher links will be removed.")) {
+                console.log("User chooses OK");
+
+                fetch("/clear-launcher", {
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("Data has been cleaned up.");
+                        console.log(data);
+                    })
+                    .catch(err => {
+                        console.error("Failed to clean up data:", err);
+                    });
+            } else {
+                console.log("User chooses Cancel");
+            }
+        });
+
+        $("#da-bookmark").click(function () {
+            if (confirm("WARNING! Your bookmark links will be removed.")) {
+                console.log("User chooses OK");
+                fetch("/clear-bookmark", {
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("Data has been cleaned up.");
+                        console.log(data);
+                    })
+                    .catch(err => {
+                        console.error("Failed to cleanup data:", err);
+                    });
+            } else {
+                console.log("User chooses Cancel");
+            }
+        });
+
+        $("#da-index").click(function () {
+            if (confirm("WARNING! Your bookmark indexes will be removed.")) {
+                console.log("User chooses OK");
+                fetch("/clear-index", {
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("Data has been cleaned up.");
+                        console.log(data);
+                    })
+                    .catch(err => {
+                        console.error("Failed to cleanup data:", err);
+                    });
+            } else {
+                console.log("User chooses Cancel");
+            }
+        });
+
+
+        $("#formFile").on("change", function (event) {
+            $("#links").val("");
+
+            const input = this;
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const rawResult = e.target.result;
+                    const finalResult = parseLinks(rawResult);
+
+                    $("#links").val($("#links").val() + finalResult);
+                };
+
+                reader.onerror = function () {
+                    alert("Error: Reading File");
+                };
+
+                reader.readAsText(file);
+            }
+        });
+        const input = document.getElementById("formFile");
+        const progressBar = document.getElementById("progressBar");
+
+        $("#bookmarkForm").on("submit", async function (e) {
+            e.preventDefault();
+            
+
+            const file = input.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/upload-bookmark");
+
+            xhr.upload.onprogress = (event) => {
+                if (event.lengthComputable) {
+                    const percent = (event.loaded / event.total) * 100;
+                    progressBar.value = percent;
+                }
+            };
+
+            xhr.onload = async () => {
+                if (xhr.status === 200) {
+                    const resp = JSON.parse(xhr.responseText);
+                    console.log("Upload finished:", resp);
+
+                    const res = await fetch(`/parse-bookmark`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ filePath: resp.filePath })
+                    });
+
+                    // set interval
+                    const iv = setInterval(async () => {
+                        const res1 = await fetch(`/progress-check`, {
+                            method: "GET",
+                            headers: { "Content-Type": "application/json" }
+                        });
+
+                        const jsn = await res1.json();
+                        // console.log(jsn)
+                        progressBar.value = jsn.percent;
+
+                        if(progressBar.value >= 100){
+                            progressBar.value = 0;
+                            clearInterval(iv)
+                            $("#links").val("");
+                        }
+                    }, 1000)
+                } else {
+                    console.error("Upload failed.");
+                    progressBar.value = 0;
+                }
+            };
+
+            xhr.send(formData);
+
+        });
+
+        function parseLinks(inp) {
+            let out = "";
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(inp, "text/html");
+
+            const links = doc.querySelectorAll("a");
+            links.forEach(link => {
+                const href = link.getAttribute("href");
+                const text = link.textContent.trim().replace(/<[^>]*>?/gm, '');
+                if (href) {
+                    //out += `${href}\n`;
+                    const obj = {
+                        title: text,
+                        url: href
+                    }
+
+                    const json = JSON.stringify(obj);
+                    out += `${json}\n`;
+                }
+            });
+            return out;
+        }
+    });
+</script>
