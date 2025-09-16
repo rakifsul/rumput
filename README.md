@@ -1,4 +1,4 @@
-# rumput
+# Rumput
 
 Personal and Multi Purpose Web Dashboard
 
