@@ -1,5 +1,6 @@
 import express from 'express';
 import { engine } from 'express-handlebars';
+import crypto from 'crypto';
 import lunr from "lunr";
 import path from 'path';
 import multer from 'multer';
@@ -13,6 +14,7 @@ const resultDir = path.join(__dirname, "data");
 const launcherPath = path.join(resultDir, "launcher.json");
 const bookmarkPath = path.join(resultDir, "bookmark.json");
 const indexPath = path.join(resultDir, "index.json");
+const notePath = path.join(resultDir, "note.json");
 
 let progress = 0;
 
@@ -61,6 +63,14 @@ app.get('/bookmark', (req, res) => {
         layout: "main",
         title: "Rumput - Bookmarks",
         header: "Bookmarks",
+    });
+});
+
+app.get('/enc-note', (req, res) => {
+    res.render("enc-note", {
+        layout: "main",
+        title: "Rumput - Encrypted Notes",
+        header: "Encrypted Notes",
     });
 });
 
@@ -159,6 +169,65 @@ app.get("/search", (req, res) => {
 
     res.json(finalResults);
 });
+
+function deriveKey(password, salt) {
+    return crypto.scryptSync(password, salt, 32); // AES-256 key
+}
+
+app.post("/encrypt-note", (req, res) => {
+    const { password, content } = req.body;
+    const salt = crypto.randomBytes(16);
+    const key = deriveKey(password, salt);
+    const iv = crypto.randomBytes(16);
+
+    const cipher = crypto.createCipheriv("aes-256-gcm", key, iv);
+    let encrypted = cipher.update(content, "utf8", "base64");
+    encrypted += cipher.final("base64");
+    const tag = cipher.getAuthTag().toString("base64");
+
+    const final = {
+        iv: iv.toString("base64"),
+        salt: salt.toString("base64"),
+        tag,
+        data: encrypted
+    };
+
+    fs.writeFileSync(notePath, JSON.stringify(final, null, 2));
+
+    res.json(final);
+});
+
+app.post("/decrypt-note", (req, res) => {
+    try {
+        const { password } = req.body;
+        const { iv, salt, tag, data } = JSON.parse(fs.readFileSync(notePath));
+
+        const key = deriveKey(password, Buffer.from(salt, "base64"));
+
+        const decipher = crypto.createDecipheriv(
+            "aes-256-gcm",
+            key,
+            Buffer.from(iv, "base64")
+        );
+        decipher.setAuthTag(Buffer.from(tag, "base64"));
+
+        let decrypted = decipher.update(data, "base64", "utf8");
+        decrypted += decipher.final("utf8");
+
+        res.json({ content: decrypted });
+    } catch (err) {
+        res.json({ error: "Decryption failed" });
+    }
+});
+
+app.get("/load-note", (req, res) => {
+    try {
+        const ret = JSON.parse(fs.readFileSync(notePath));
+        res.json(ret);
+    } catch (err) {
+        res.json({ error: "Loading failed" });
+    }
+})
 
 app.delete("/clear-launcher", (req, res) => {
     fs.truncate(launcherPath, 0, (err) => {

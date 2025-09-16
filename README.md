@@ -6,6 +6,7 @@ Personal and Multi Purpose Web Dashboard
 
 - URL Launchers
 - Bookmarks
+- Encrypted Notes
 - Settings
 
 ## Screenshot
@@ -15,3 +16,5 @@ Personal and Multi Purpose Web Dashboard
 ![screenshot](./.screenshots/screenshot-2.png "Screenshot")
 
 ![screenshot](./.screenshots/screenshot-3.png "Screenshot")
+
+![screenshot](./.screenshots/screenshot-4.png "Screenshot")
