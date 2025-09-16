@@ -168,7 +168,7 @@ label {
 
 /* Custom Context Menu */
 #contextMenu {
-    position: absolute;
+    position: fixed;
     z-index: 2000;
     display: none;
     min-width: 200px;
