@@ -36,7 +36,7 @@ cd rumput
 Docker compose up:
 
 ```
-docker compose up -d
+docker compose up -d --build
 ```
 
 Visit http://127.0.0.1:7500
