@@ -1,6 +1,6 @@
 # Rumput
 
-Personal and Multi Purpose Web Dashboard...
+Personal and Multi Purpose Web Dashboard.
 
 ## Features
 
