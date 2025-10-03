@@ -51,7 +51,7 @@
                 const password = $("#password").val();
                 const content = $("#content").val();
 
-                const res = await fetch(`/encrypt-note`, {
+                const res = await fetch(`/enc-notes/encrypt`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -72,7 +72,7 @@
         $("#load").click(async function (e) {
             const password = $("#password").val();
 
-            const res = await fetch(`/decrypt-note`, {
+            const res = await fetch(`/enc-notes/decrypt`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

@@ -11,46 +11,6 @@ async function parse() {
 
     const html = fs.readFileSync(filePath, "utf8");
     const $ = cheerio.load(html);
-    // const allLinks = $("a").toArray();
-    // let total = allLinks.length;
-    // const results = [];
-
-    // for (let i = 0; i < total; i++) {
-    //     const el = allLinks[i];
-    //     const url = $(el).attr("href");
-    //     if (!url) {
-    //         // update progress setiap 500 link
-    //         if (i % 500 === 0 || i === total - 1) {
-    //             parentPort.postMessage({
-    //                 current: i + 1,
-    //                 total,
-    //                 percent: Math.round(((i + 1) / total) * 100),
-    //                 done: i === total - 1,
-    //             });
-    //             await new Promise(r => setImmediate(r)); // beri napas event loop
-    //         }
-    //         continue;
-    //     }
-
-    //     const title = $(`a[href="${url}"]`).text();
-    //     const add_date = $(el).attr("add_date") || null;
-    //     results.push({
-    //         title: title,
-    //         url: url,
-    //         add_date: add_date,
-    //     });
-
-    //     // update progress setiap 500 link
-    //     if (i % 500 === 0 || i === total - 1) {
-    //         parentPort.postMessage({
-    //             current: i + 1,
-    //             total,
-    //             percent: Math.round(((i + 1) / total) * 100),
-    //             done: i === total - 1,
-    //         });
-    //         await new Promise(r => setImmediate(r)); // beri napas event loop
-    //     }
-    // }
 
     let i = 0;
     let total = $("a").length;
@@ -89,6 +49,7 @@ async function parse() {
     // simpan hasil JSON
     log("parsing finished - saving file")
     fs.writeFileSync(path.join(resultDir, "bookmark.json"), JSON.stringify(results, null, 2));
+    // fs.writeFileSync(global.bookmarkPath, JSON.stringify(results, null, 2));
     log("parsing completed")
 
     await build(results, resultDir);
@@ -120,6 +81,7 @@ async function build(results, resultDir) {
 
     log("indexing finished - saving file")
     fs.writeFileSync(path.join(resultDir, "index.json"), JSON.stringify(idx, null, 2));
+    // fs.writeFileSync(global.indexPath, JSON.stringify(idx, null, 2));
     log("indexing completed")
 
 }

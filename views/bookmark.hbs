@@ -51,7 +51,7 @@
 
         function doSearch() {
             const query = $("#query").val();
-            fetch(`/search?q=${query}`, {
+            fetch(`/bookmarks/search?q=${query}`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" }
             })

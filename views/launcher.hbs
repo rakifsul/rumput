@@ -85,7 +85,7 @@
             $("#itemForm")[0].reset();
         });
         // Tambah/Edit Submit
-        $("#itemForm").on("submit", function (e) {
+        $("#itemForm").on("submit", async function (e) {
             e.preventDefault();
             const id = "launcher-" + Date.now();
             console.log(id)
@@ -127,7 +127,7 @@
             $("#itemModal").modal("hide");
             //$currentCard = null;
 
-            saveLinksToServer()
+            await saveLinksToServer()
         });
 
         // Klik kanan pada card
@@ -163,15 +163,15 @@
             $("#itemModal").modal("show");
         });
 
-        $("#deleteItem").click(function () {
+        $("#deleteItem").click(async function () {
             $currentCard.remove();
             $currentCard = null;
-            saveLinksToServer();
+            await saveLinksToServer();
         });
     });
 
     // Simpan data ke backend
-    function saveLinksToServer() {
+    async function saveLinksToServer() {
         const launcher = [];
         $(".dashboard-card").each(function () {
             //alert($(this).data("title"))
@@ -185,7 +185,7 @@
         });
 
         console.log(launcher)
-        fetch("/save-launcher", {
+        fetch("/launchers/save", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ launcher })
@@ -207,7 +207,7 @@
         ev.preventDefault();
     }
 
-    function dropHandler(ev) {
+    async function dropHandler(ev) {
         ev.preventDefault();
         const draggedId = ev.dataTransfer.getData("text");
         const draggedEl = $("#" + draggedId);
@@ -236,7 +236,7 @@
             draggedEl.find("i").text(temp.icon);
             draggedEl.find("h6").text(temp.title);
 
-            saveLinksToServer();
+            await saveLinksToServer();
         }
     }
 

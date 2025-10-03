@@ -4,15 +4,15 @@
         <br>
         <ul class="sidebar-ul">
             <li class="sidebar-li">
-                <button id="da-launcher" class="btn btn-outline-danger w-100">Delete All Launchers</button>
+                <button id="da-launcher" class="btn btn-danger w-100">Delete All Launchers</button>
             </li>
 
             <li class="sidebar-li">
-                <button id="da-bookmark" class="btn btn-outline-danger w-100">Delete All Bookmarks</button>
+                <button id="da-bookmark" class="btn btn-danger w-100">Delete All Bookmarks</button>
             </li>
 
             <li class="sidebar-li">
-                <button id="da-index" class="btn btn-outline-danger w-100">Delete All Indexes</button>
+                <button id="da-index" class="btn btn-danger w-100">Delete All Indexes</button>
             </li>
         </ul>
         <hr class="px-2">
@@ -51,7 +51,7 @@
             if (confirm("WARNING! Your launcher links will be removed.")) {
                 console.log("User chooses OK");
 
-                fetch("/clear-launcher", {
+                fetch("/settings/clear-launcher", {
                     method: "DELETE",
                     headers: { "Content-Type": "application/json" }
                 })
@@ -71,7 +71,7 @@
         $("#da-bookmark").click(function () {
             if (confirm("WARNING! Your bookmark links will be removed.")) {
                 console.log("User chooses OK");
-                fetch("/clear-bookmark", {
+                fetch("/settings/clear-bookmark", {
                     method: "DELETE",
                     headers: { "Content-Type": "application/json" }
                 })
@@ -91,7 +91,7 @@
         $("#da-index").click(function () {
             if (confirm("WARNING! Your bookmark indexes will be removed.")) {
                 console.log("User chooses OK");
-                fetch("/clear-index", {
+                fetch("/settings/clear-index", {
                     method: "DELETE",
                     headers: { "Content-Type": "application/json" }
                 })
@@ -145,7 +145,7 @@
             formData.append("file", file);
 
             const xhr = new XMLHttpRequest();
-            xhr.open("POST", "/upload-bookmark");
+            xhr.open("POST", "/settings/upload-bookmark");
 
             xhr.upload.onprogress = (event) => {
                 if (event.lengthComputable) {
@@ -159,7 +159,7 @@
                     const resp = JSON.parse(xhr.responseText);
                     console.log("Upload finished:", resp);
 
-                    const res = await fetch(`/parse-bookmark`, {
+                    const res = await fetch(`/settings/parse-bookmark`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ filePath: resp.filePath })
@@ -167,7 +167,7 @@
 
                     // set interval
                     const iv = setInterval(async () => {
-                        const res1 = await fetch(`/progress-check`, {
+                        const res1 = await fetch(`/settings/progress-check`, {
                             method: "GET",
                             headers: { "Content-Type": "application/json" }
                         });
