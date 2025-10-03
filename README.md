@@ -16,7 +16,7 @@ Due to changes in launcher.json structure recently, old launcher cards may need 
 
 ## More Features
 
-- Your suggestion => issue tracker.
+- Write your suggestions to issue tracker.
 
 ## My More Feature Ideas
 
