@@ -1,10 +1,6 @@
 import express from "express";
-
-import crypto from 'crypto';
-import lunr from "lunr";
 import path from 'path';
 import multer from 'multer';
-import * as cheerio from 'cheerio';
 import fs from 'fs';
 import { Worker } from "worker_threads";
 
@@ -52,6 +48,14 @@ router.delete("/clear-bookmark", (req, res) => {
 
 router.delete("/clear-index", (req, res) => {
     fs.truncate(global.indexPath, 0, (err) => {
+        if (err) throw err;
+        console.log("File dikosongkan (async).");
+    });
+    res.json({ message: "Berhasil didelete" });
+});
+
+router.delete("/clear-note", (req, res) => {
+    fs.truncate(global.notePath, 0, (err) => {
         if (err) throw err;
         console.log("File dikosongkan (async).");
     });

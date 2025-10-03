@@ -1,7 +1,6 @@
 <div class="row g-4">
     <div class="col-12 col-md-8">
-        <h3>Delete All</h3>
-        <br>
+        <h5>Danger Zone</h5>
         <ul class="sidebar-ul">
             <li class="sidebar-li">
                 <button id="da-launcher" class="btn btn-danger w-100">Delete All Launchers</button>
@@ -14,16 +13,19 @@
             <li class="sidebar-li">
                 <button id="da-index" class="btn btn-danger w-100">Delete All Indexes</button>
             </li>
+
+            <li class="sidebar-li">
+                <button id="da-note" class="btn btn-danger w-100">Delete All Notes</button>
+            </li>
         </ul>
         <hr class="px-2">
-        <h3>Import Bookmarks</h3>
-        <br>
+        <h5>Import Bookmarks</h5>
         <form id="bookmarkForm" class="px-2">
             <div class="text-center">
-                <input class="form-control form-control-lg file-input" type="file" id="formFile" />
+                <input class="form-control form-control file-input" type="file" id="formFile" />
                 {{!-- <label for="formFile" class="btn btn-dark w-100">Import Bookmarks (HTML format)</label> --}}
             </div>
-            
+
             <div>
                 <progress id="progressBar" class="w-100" value="0" max="100"></progress>
                 <textarea class="form-control" id="links" name="links" rows="12" placeholder="" disabled></textarea>
@@ -41,7 +43,8 @@
         <h3 class="text-primary">Info</h3>
         <p>This page is configuration center. All of the elements may or may not be related to other pages.</p>
         <h3 class="text-danger">WARNING!</h3>
-        <p>Those red buttons on the top left will delete your Rumput data permanently. Don't click them unless you know what you are doing.</p>
+        <p>Those red buttons on the top left will delete your Rumput data permanently. Don't click them unless you know
+            what you are doing.</p>
     </div>
 </div>
 
@@ -108,6 +111,25 @@
             }
         });
 
+        $("#da-note").click(function () {
+            if (confirm("WARNING! Your notes will be removed.")) {
+                console.log("User chooses OK");
+                fetch("/settings/clear-note", {
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("Data has been cleaned up.");
+                        console.log(data);
+                    })
+                    .catch(err => {
+                        console.error("Failed to cleanup data:", err);
+                    });
+            } else {
+                console.log("User chooses Cancel");
+            }
+        });
 
         $("#formFile").on("change", function (event) {
             $("#links").val("");
@@ -136,7 +158,7 @@
 
         $("#bookmarkForm").on("submit", async function (e) {
             e.preventDefault();
-            
+
 
             const file = input.files[0];
             if (!file) return;
@@ -176,7 +198,7 @@
                         // console.log(jsn)
                         progressBar.value = jsn.percent;
 
-                        if(progressBar.value >= 100){
+                        if (progressBar.value >= 100) {
                             progressBar.value = 0;
                             clearInterval(iv)
                             $("#links").val("");

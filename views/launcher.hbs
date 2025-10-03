@@ -18,17 +18,6 @@
             </div>
         </a>
     </div>
-    {{!-- <div class="col-6 col-md-3 col-lg-2 dashboard-card" data-title="{{this.title}}" data-link="{{this.url}}"
-        data-icon="{{this.icon}}">
-        <a href="{{this.url}}" class="text-decoration-none">
-            <div class="card text-center h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <i class="display-4 text-danger">{{this.icon}}</i>
-                    <h6 class="mt-3 text-dark">{{this.title}}</h6>
-                </div>
-            </div>
-        </a>
-    </div> --}}
     {{/each}}
 </div>
 
@@ -79,7 +68,7 @@
     $(document).ready(function () {
         let $currentCard = null;
 
-        // 🔹 Tombol Tambah → selalu reset ke mode Add
+        // Tombol Tambah → selalu reset ke mode Add
         $("[data-bs-target='#itemModal']").on("click", function () {
             $currentCard = null;
             $("#itemForm")[0].reset();
@@ -87,7 +76,7 @@
         // Tambah/Edit Submit
         $("#itemForm").on("submit", async function (e) {
             e.preventDefault();
-            const id = "launcher-" + Date.now();
+            const id = "no-id";//"launcher-" + Date.now();
             console.log(id)
             const title = $("#titleInput").val();
             const link = $("#linkInput").val();
@@ -173,15 +162,17 @@
     // Simpan data ke backend
     async function saveLinksToServer() {
         const launcher = [];
+        let countedId = 0;
         $(".dashboard-card").each(function () {
             //alert($(this).data("title"))
-            console.log($(this).attr("id"))
+            console.log(countedId)
             launcher.push({
-                id: $(this).attr("id"),
+                id: countedId.toString(),
                 url: $(this).data("link"),
                 title: $(this).data("title"),
                 icon: $(this).data("icon")
             });
+            ++countedId;
         });
 
         console.log(launcher)
@@ -208,6 +199,22 @@
     }
 
     async function dropHandler(ev) {
+        ev.preventDefault();
+        const dashboardGrid = $("#dashboardGrid");
+        const draggedId = ev.dataTransfer.getData("text");
+        const draggedEl = $("#" + draggedId);
+
+        const targetId = ev.currentTarget.id;
+        const targetEl = $("#" + targetId);
+
+        if (draggedEl !== targetEl) {
+            draggedEl.insertBefore(targetEl);
+
+            await saveLinksToServer();
+        }
+    }
+
+    async function dropHandlerOld(ev) {
         ev.preventDefault();
         const draggedId = ev.dataTransfer.getData("text");
         const draggedEl = $("#" + draggedId);

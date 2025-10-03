@@ -1,12 +1,6 @@
 import express from 'express';
 import { engine } from 'express-handlebars';
-import crypto from 'crypto';
-import lunr from "lunr";
 import path from 'path';
-import multer from 'multer';
-import * as cheerio from 'cheerio';
-import fs from 'fs';
-import { Worker } from "worker_threads";
 
 import bookmarkRouter from './routes/bookmark.js';
 import encNoteRouter from './routes/enc-note.js';

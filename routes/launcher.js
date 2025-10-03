@@ -1,12 +1,5 @@
 import express from "express";
-
-import crypto from 'crypto';
-import lunr from "lunr";
-import path from 'path';
-import multer from 'multer';
-import * as cheerio from 'cheerio';
 import fs from 'fs';
-import { Worker } from "worker_threads";
 
 const router = express.Router();
 
