@@ -2,8 +2,13 @@
 
 Personal and Multi Purpose Web Dashboard.
 
+## IMPORTANT NOTES
+
+Due to changes in launcher.json structure recently, old launcher cards may need to be recreated.
+
 ## Features
 
+- Search Box
 - URL Launchers
 - Bookmarks
 - Encrypted Notes
@@ -17,9 +22,8 @@ Personal and Multi Purpose Web Dashboard.
 
 - Todo List
 - Password Manager
-- Search Box
 
-## How to Install (docker)
+## How to Install (using Docker)
 
 Clone repository:
 
@@ -40,6 +44,36 @@ docker compose up -d --build
 ```
 
 Visit http://127.0.0.1:7500
+
+## How to Develop (using Node.js and NPM)
+
+Node.js v22.19.0 is required.
+
+Port 3000 must be free.
+
+Clone repository:
+
+```
+git clone https://github.com/rakifsul/rumput.git
+```
+
+Change directory:
+
+```
+cd rumput
+```
+
+Install dependencies:
+
+```
+npm install
+```
+
+Run:
+
+```
+npm run dev
+```
 
 ## Screenshot
 
