@@ -2,10 +2,6 @@
 
 Personal and Multi Purpose Web Dashboard.
 
-## IMPORTANT NOTES
-
-Due to changes in launcher.json structure recently, old launcher cards may need to be recreated.
-
 ## Features
 
 - Search Box
@@ -22,6 +18,8 @@ Due to changes in launcher.json structure recently, old launcher cards may need 
 
 - Todo List
 - Password Manager
+- RSS Reader
+- Embed Scripts
 
 ## How to Install (using Docker)
 
