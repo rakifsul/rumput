@@ -30,6 +30,17 @@ router.get('/', (req, res) => {
     });
 });
 
+router.post("/default-se/save", (req, res) => {
+    const data = req.body;
+    if (!data.selected) {
+        return res.status(400).json({ error: "Format JSON salah" });
+    }
+
+    fs.writeFileSync(global.defaultSEPath, JSON.stringify(data, null, 2));
+
+    res.json({ message: "Berhasil disimpan" });
+});
+
 router.delete("/clear-launcher", (req, res) => {
     fs.truncate(global.launcherPath, 0, (err) => {
         if (err) throw err;

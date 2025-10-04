@@ -11,11 +11,19 @@ router.get('/', (req, res) => {
         launcher = [];
     }
 
+    let defaultSE;
+    try {
+        defaultSE = JSON.parse(fs.readFileSync(global.defaultSEPath, "utf-8"));
+    } catch (err) {
+        defaultSE = {};
+    }
+
     res.render("launcher", {
         layout: "main",
         title: "Rumput - Launchers",
         header: "Launchers",
-        launcher: launcher
+        launcher: launcher,
+        defaultSE: defaultSE.selected
     });
 });
 

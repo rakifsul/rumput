@@ -1,23 +1,18 @@
 <div class="row g-4">
     <div class="col-12 col-md-8">
-        <h5>Danger Zone</h5>
-        <ul class="sidebar-ul">
-            <li class="sidebar-li">
-                <button id="da-launcher" class="btn btn-danger w-100">Delete All Launchers</button>
-            </li>
-
-            <li class="sidebar-li">
-                <button id="da-bookmark" class="btn btn-danger w-100">Delete All Bookmarks</button>
-            </li>
-
-            <li class="sidebar-li">
-                <button id="da-index" class="btn btn-danger w-100">Delete All Indexes</button>
-            </li>
-
-            <li class="sidebar-li">
-                <button id="da-note" class="btn btn-danger w-100">Delete All Notes</button>
-            </li>
-        </ul>
+        <h5>Default Search Engine</h5>
+        <div class="dropdown">
+            <button class="btn btn-dark dropdown-toggle w-100" type="button" id="dropdownMenuButton"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                Choose a Default Search Engine
+            </button>
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="#" data-value="search-google">Google</a></li>
+                <li><a class="dropdown-item" href="#" data-value="search-marginalia">Marginalia</a></li>
+                <li><a class="dropdown-item" href="#" data-value="search-bing">Bing</a></li>
+                <li><a class="dropdown-item" href="#" data-value="search-brave">Brave</a></li>
+            </ul>
+        </div>
         <hr class="px-2">
         <h5>Import Bookmarks</h5>
         <form id="bookmarkForm" class="px-2">
@@ -38,17 +33,38 @@
                 </div>
             </div>
         </form>
+        <hr class="px-2">
+        <h5>Danger Zone</h5>
+        <ul class="sidebar-ul">
+            <li class="sidebar-li">
+                <button id="da-launcher" class="btn btn-danger w-100">Delete All Launchers</button>
+            </li>
+
+            <li class="sidebar-li">
+                <button id="da-bookmark" class="btn btn-danger w-100">Delete All Bookmarks</button>
+            </li>
+
+            <li class="sidebar-li">
+                <button id="da-index" class="btn btn-danger w-100">Delete All Indexes</button>
+            </li>
+
+            <li class="sidebar-li">
+                <button id="da-note" class="btn btn-danger w-100">Delete All Notes</button>
+            </li>
+        </ul>
+        <hr class="px-2">
     </div>
     <div class="col-12 col-md-4 border-separator">
         <h3 class="text-primary">Info</h3>
         <p>This page is configuration center. All of the elements may or may not be related to other pages.</p>
         <h3 class="text-danger">WARNING!</h3>
-        <p>Those red buttons on the top left will delete your Rumput data permanently. Don't click them unless you know
+        <p>Those red buttons at Danger Zone will delete your Rumput data permanently. Don't click them unless you know
             what you are doing.</p>
     </div>
 </div>
 
 <script>
+    let defaultSearchEngine = {};
     $(document).ready(function () {
         $("#da-launcher").click(function () {
             if (confirm("WARNING! Your launcher links will be removed.")) {
@@ -129,6 +145,20 @@
             } else {
                 console.log("User chooses Cancel");
             }
+        });
+
+        $(".dropdown-item").on("click", async function (e) {
+            e.preventDefault();
+
+            const selected = $(this).data("value");
+
+            // Update JSON
+            defaultSearchEngine = { selected: selected };
+            console.log(defaultSearchEngine)
+           
+            // Update teks tombol
+            $("#dropdownMenuButton").text($(this).text());
+            await saveDefaultSearchEngineToServer();
         });
 
         $("#formFile").on("change", function (event) {
@@ -237,4 +267,21 @@
             return out;
         }
     });
+
+    async function saveDefaultSearchEngineToServer() {
+        const toSave = JSON.stringify(defaultSearchEngine);
+        console.log(toSave)
+        fetch("/settings/default-se/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: toSave
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Data stored:", data);
+            })
+            .catch(err => {
+                console.error("Failed to save:", err);
+            });
+    }
 </script>

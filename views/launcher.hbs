@@ -1,13 +1,24 @@
 <div class="mb-3">
     <div class="row">
         <div class="col-12 col-md-6 col-lg-6 mb-2">
-            <div class="input-group">
+            <div class="input-group mb-3">
+                <input id="query" type="text" placeholder="Search here..." class="form-control" aria-label="Text input with dropdown button">
+                <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">Search</button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" id="search-google" href="javascript:void(0);">Google</a></li>
+                    <li><a class="dropdown-item" id="search-marginalia" href="javascript:void(0);">Marginalia</a></li>
+                    <li><a class="dropdown-item" id="search-bing" href="javascript:void(0);">Bing</a></li>
+                    <li><a class="dropdown-item" id="search-brave" href="javascript:void(0);">Brave</a></li>
+                </ul>
+            </div>
+            {{!-- <div class="input-group">
                 <input id="query" type="text" class="form-control" placeholder="Search here..."
                     aria-label="Search here..." aria-describedby="search" autocomplete="off" autofocus />
                 <a class="btn btn-dark" id="search" href="#">
                     Search
                 </a>
-            </div>
+            </div> --}}
         </div>
         <div class="col-12 col-md-6 col-lg-6 mb-2">
             <button class="btn btn-dark w-100" data-bs-toggle="modal" data-bs-target="#itemModal">
@@ -81,12 +92,17 @@
 <script>
     $(document).ready(function () {
         let $currentCard = null;
-
-        $('#search').click(doSearch);
+        console.log("{{defaultSE}}")
+        const defaultSearch = '#{{defaultSE}}';
+        // $(defaultSearch).click(doSearchDefault);
+        $('#search-google').click(doSearchGoogle);
+        $('#search-marginalia').click(doSearchMarginalia);
+        $('#search-bing').click(doSearchBing);
+        $('#search-brave').click(doSearchBrave);
         $(document).on('keypress', function (e) {
             if (e.which == 13) {
-                $('#search').click()
-				
+                $(defaultSearch).click()
+
                 e.preventDefault()
                 return false
             }
@@ -184,8 +200,20 @@
     });
 
     //
-    function doSearch () {
-        window.open(`https://www.google.com/search?q=${$('#query').val()}`,'_self');
+    function doSearchDefault() {
+        window.open(`https://www.google.com/search?q=${$('#query').val()}`, '_self');
+    }
+    function doSearchGoogle() {
+        window.open(`https://www.google.com/search?q=${$('#query').val()}`, '_self');
+    }
+    function doSearchMarginalia() {
+        window.open(`https://marginalia-search.com/search?query=${$('#query').val()}&profile=corpo`, '_self');
+    }
+    function doSearchBing() {
+        window.open(`https://www.bing.com/search?q=${$('#query').val()}`, '_self');
+    }
+    function doSearchBrave() {
+        window.open(`https://search.brave.com/search?q=${$('#query').val()}`, '_self');
     }
 
     // Simpan data ke backend

@@ -15,6 +15,7 @@ global.launcherPath = path.join(global.resultDir, "launcher.json");
 global.bookmarkPath = path.join(global.resultDir, "bookmark.json");
 global.indexPath = path.join(global.resultDir, "index.json");
 global.notePath = path.join(global.resultDir, "note.json");
+global.defaultSEPath = path.join(global.resultDir, "default-se.json");
 
 const app = express();
 
