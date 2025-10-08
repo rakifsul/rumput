@@ -23,10 +23,20 @@ let processingFilePath;
 //
 
 router.get('/', (req, res) => {
+    let defaultSE;
+    try {
+        const rd = fs.readFileSync(global.defaultSEPath, "utf-8");
+
+        defaultSE = JSON.parse(rd);
+    } catch (err) {
+        defaultSE = undefined;
+    }
+
     res.render("setting", {
         layout: "main",
         title: "Rumput - Settings",
         header: "Settings",
+        defaultSE: defaultSE ? defaultSE.selected : ""
     });
 });
 

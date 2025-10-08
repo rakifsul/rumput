@@ -48,11 +48,24 @@ async function parse() {
 
     // simpan hasil JSON
     log("parsing finished - saving file")
-    fs.writeFileSync(path.join(resultDir, "bookmark.json"), JSON.stringify(results, null, 2));
-    // fs.writeFileSync(global.bookmarkPath, JSON.stringify(results, null, 2));
-    log("parsing completed")
+    
+    try {
+        const oldBookmarks = JSON.parse(fs.readFileSync(path.join(resultDir, "bookmark.json")));
+        const totalBookmarks = [...oldBookmarks, ...results];
+        fs.writeFileSync(path.join(resultDir, "bookmark.json"), JSON.stringify(totalBookmarks, null, 2));
 
-    await build(results, resultDir);
+        log("parsing completed")
+
+        await build(totalBookmarks, resultDir);
+    } catch (err) {
+        fs.writeFileSync(path.join(resultDir, "bookmark.json"), JSON.stringify(results, null, 2));
+
+        log("parsing completed")
+
+        await build(results, resultDir);
+    }
+
+
 }
 
 async function build(results, resultDir) {

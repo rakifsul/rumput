@@ -3,41 +3,45 @@
         <div class="flex-grow-1">
             <input id="password" type="password" name="password" class="form-control" placeholder="Your password"
                 aria-label="Password" required>
-            <br>
-            <textarea class="form-control" id="content" name="links" style="height:85%;" placeholder="Your input note"></textarea>
-            <br>
-            <div class="row">
-                <div class="col-12 col-md-4 mb-2">
-                    <button id="save" class="btn btn-dark w-100">Save</button>
-                </div>
-
-                <div class="col-12 col-md-4 mb-2">
-                    <button id="load" class="btn btn-dark w-100">Load</button>
-                </div>
-
-                <div class="col-12 col-md-4 mb-2">
-                    <button id="clear" class="btn btn-dark w-100">Clear</button>
-                </div>
+            <div class="btn-group my-1" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-danger" title="Load" id="load">LD</button>
+                <button type="button" class="btn btn-danger" title="Save" id="save">SV</button>
+                <button type="button" class="btn btn-danger" title="Save and Close" id="save-close">SC</button>
+                <button type="button" class="btn btn-danger" title="Clear" id="clear">CL</button>
             </div>
+            <div class="btn-group my-1" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-primary" title="Insert DateTime" id="insert-date-time">DT</button>
+            </div>
+            <textarea class="form-control" id="content" name="links" style="height:90%;"
+                placeholder="Your input note"></textarea>
             <br>
-            {{!-- <div class="row">
-                <div class="col-12 col-md-12">
-                    <button id="clear" class="btn btn-dark w-100">Clear</button>
-                </div>
-            </div> --}}
         </div>
     </div>
     <div class="col-12 col-md-4 border-separator flex-grow-1">
         <h3 class="text-primary">Info</h3>
-        <p>Write a note on the textarea, enter the password, then click "Save".</p>
-        <p>You can decrypt the notes by entering the password again and click "Load"</p>
-        <p>If you close and reopen this app, then you just need to enter the password and click "Load".</p>
-        <p>To clear both the password and the note temporarily, click "Clear".</p>
+        <p>Write a note on the textarea, enter the password, then click "Save (SV)" or "Save and Close (SC)".</p>
+        <p>You can decrypt the notes by entering the password again and click "Load (LD)"</p>
+        <p>If you close and reopen this app, then you just need to enter the password and click "Load (LD)".</p>
+        <p>To clear both the password and the note temporarily, click "Clear (CL)".</p>
     </div>
 </div>
 
 <script>
     $(document).ready(function () {
+        $("#insert-date-time").click(function () {
+            let date = new Date();
+            let dateString = 
+            date.getFullYear() + "-" + 
+            (date.getMonth() + 1) + "-" + 
+            date.getDate() + " " + 
+            date.getHours() + ":" + 
+            date.getMinutes() + ":" + 
+            date.getSeconds();
+
+            $("#content").val($("#content").val() + dateString);
+            $("#content").focus();
+        });
+
         $("#clear").click(function () {
             $("#content").val("");
             $("#password").val("");
@@ -63,6 +67,31 @@
                 const jsn = await res.json();
             } else {
                 console.log("User chooses Cancel");
+                return;
+            }
+        });
+
+        $("#save-close").click(async function (e) {
+            if (confirm("WARNING! Notes will be overwritten. Is it OK?")) {
+                console.log("User chooses OK");
+
+                //
+                const password = $("#password").val();
+                const content = $("#content").val();
+
+                const res = await fetch(`/enc-notes/encrypt`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        password: password,
+                        content: content
+                    })
+                });
+
+                const jsn = await res.json();
+            } else {
+                console.log("User chooses Cancel");
+                return;
             }
 
             $("#content").val("");
@@ -82,7 +111,7 @@
 
             const output = await res.json();
 
-            if(output.error){
+            if (output.error) {
                 alert("WARNING! Password didn't match.")
             }
 

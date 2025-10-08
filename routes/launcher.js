@@ -6,7 +6,9 @@ const router = express.Router();
 router.get('/', (req, res) => {
     let launcher;
     try {
-        launcher = JSON.parse(fs.readFileSync(global.launcherPath, "utf-8"));
+        const rd = fs.readFileSync(global.launcherPath, "utf-8");
+
+        launcher = JSON.parse(rd);
     } catch (err) {
         launcher = [];
     }

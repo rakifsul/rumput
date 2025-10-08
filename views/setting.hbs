@@ -6,11 +6,13 @@
                 data-bs-toggle="dropdown" aria-expanded="false">
                 Choose a Default Search Engine
             </button>
-            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" href="#" data-value="search-google">Google</a></li>
-                <li><a class="dropdown-item" href="#" data-value="search-marginalia">Marginalia</a></li>
-                <li><a class="dropdown-item" href="#" data-value="search-bing">Bing</a></li>
-                <li><a class="dropdown-item" href="#" data-value="search-brave">Brave</a></li>
+            <ul id="se" class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="javascript:void(0);" data-value="search-google">Google</a></li>
+                <li><a class="dropdown-item" href="javascript:void(0);" data-value="search-yahoo">Yahoo!</a></li>
+                <li><a class="dropdown-item" href="javascript:void(0);" data-value="search-bing">Bing</a></li>
+                <li><a class="dropdown-item" href="javascript:void(0);" data-value="search-brave">Brave</a></li>
+                <li><a class="dropdown-item" href="javascript:void(0);" data-value="search-marginalia">Marginalia</a>
+                </li>
             </ul>
         </div>
         <hr class="px-2">
@@ -45,10 +47,6 @@
             </li>
 
             <li class="sidebar-li">
-                <button id="da-index" class="btn btn-danger w-100">Delete All Indexes</button>
-            </li>
-
-            <li class="sidebar-li">
                 <button id="da-note" class="btn btn-danger w-100">Delete All Notes</button>
             </li>
         </ul>
@@ -57,6 +55,8 @@
     <div class="col-12 col-md-4 border-separator">
         <h3 class="text-primary">Info</h3>
         <p>This page is configuration center. All of the elements may or may not be related to other pages.</p>
+        <p>Bookmarks import is incremental. In case you want to replace your old bookmarks, go ahead and click "Delete
+            All Bookmarks" first.</p>
         <h3 class="text-danger">WARNING!</h3>
         <p>Those red buttons at Danger Zone will delete your Rumput data permanently. Don't click them unless you know
             what you are doing.</p>
@@ -66,6 +66,8 @@
 <script>
     let defaultSearchEngine = {};
     $(document).ready(function () {
+
+
         $("#da-launcher").click(function () {
             if (confirm("WARNING! Your launcher links will be removed.")) {
                 console.log("User chooses OK");
@@ -90,6 +92,8 @@
         $("#da-bookmark").click(function () {
             if (confirm("WARNING! Your bookmark links will be removed.")) {
                 console.log("User chooses OK");
+
+                // delete bookmarks
                 fetch("/settings/clear-bookmark", {
                     method: "DELETE",
                     headers: { "Content-Type": "application/json" }
@@ -102,14 +106,8 @@
                     .catch(err => {
                         console.error("Failed to cleanup data:", err);
                     });
-            } else {
-                console.log("User chooses Cancel");
-            }
-        });
 
-        $("#da-index").click(function () {
-            if (confirm("WARNING! Your bookmark indexes will be removed.")) {
-                console.log("User chooses OK");
+                // delete indexes
                 fetch("/settings/clear-index", {
                     method: "DELETE",
                     headers: { "Content-Type": "application/json" }
@@ -147,6 +145,7 @@
             }
         });
 
+        markSEActive("{{ defaultSE }}")
         $(".dropdown-item").on("click", async function (e) {
             e.preventDefault();
 
@@ -155,10 +154,12 @@
             // Update JSON
             defaultSearchEngine = { selected: selected };
             console.log(defaultSearchEngine)
-           
+
             // Update teks tombol
-            $("#dropdownMenuButton").text($(this).text());
             await saveDefaultSearchEngineToServer();
+
+            //$("#dropdownMenuButton").text($(this).text());
+            markSEActive(selected);
         });
 
         $("#formFile").on("change", function (event) {
@@ -283,5 +284,18 @@
             .catch(err => {
                 console.error("Failed to save:", err);
             });
+    }
+
+    function markSEActive(inpSelected) {
+        $("#se li a").each(function () {
+            let isMatch = $(this).data("value") == inpSelected;
+            if (isMatch) {
+                $(this).addClass("active");
+                $("#dropdownMenuButton").text($(this).text());
+            } else {
+                $(this).removeClass("active");
+                // $("#dropdownMenuButton").text($(this).text());
+            }
+        });
     }
 </script>
