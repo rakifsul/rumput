@@ -2,9 +2,9 @@
 
 Personal and Multi Purpose Web Dashboard.
 
-## Traktir
+## Link untuk Memberi Saya Uang
 
-Jika aplikasi ini bermanfaat bagi Anda, pertimbangkanlah untuk [traktir saya melalui link ini](https://karyakarsa.com/rakifsul/info). Traktiran Anda membantu saya untuk tetap melakukan update pada aplikasi ini.
+Ini adalah [Link untuk Memberi Saya Uang](https://karyakarsa.com/rakifsul/info).
 
 ## Features
 
