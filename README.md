@@ -85,4 +85,4 @@ npm run dev
 
 ## More from RAKIFSUL
 
-- [www.rakifsul.my.id](https://www.rakifsul.my.id).
+- [www.rakifsul.my.id](https://www.rakifsul.my.id)
