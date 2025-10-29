@@ -2,10 +2,6 @@
 
 Personal and Multi Purpose Web Dashboard.
 
-## Link untuk Memberi Saya Uang
-
-Ini adalah [Link untuk Memberi Saya Uang](https://trakteer.id/rakifsul).
-
 ## Features
 
 - Search Box
@@ -86,3 +82,7 @@ npm run dev
 ![screenshot](./.screenshots/screenshot-3.png "Screenshot")
 
 ![screenshot](./.screenshots/screenshot-4.png "Screenshot")
+
+## More from RAKIFSUL
+
+- [www.rakifsul.my.id](https://www.rakifsul.my.id).
