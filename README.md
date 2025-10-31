@@ -83,6 +83,6 @@ npm run dev
 
 ![screenshot](./.screenshots/screenshot-4.png "Screenshot")
 
-## More from RAKIFSUL
+## Get More Precious Links
 
 - [www.rakifsul.my.id](https://www.rakifsul.my.id)
