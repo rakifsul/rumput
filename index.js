@@ -33,7 +33,12 @@ app.use("/bookmarks", bookmarkRouter);
 app.use("/launchers", launcherRouter);
 
 app.get("/", (req, res) => {
-    res.redirect("/launchers");
+    // res.redirect("/launchers");
+    res.render("index", {
+        layout: "main",
+        title: "Rumput",
+        header: "Rumput"
+    });
 })
 
 const port = 3000;
