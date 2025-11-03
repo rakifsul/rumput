@@ -17,7 +17,9 @@ router.get('/', (req, res) => {
     try {
         defaultSE = JSON.parse(fs.readFileSync(global.defaultSEPath, "utf-8"));
     } catch (err) {
-        defaultSE = {};
+        defaultSE = {
+            selected: "search-google"
+        };
     }
 
     res.render("launcher", {

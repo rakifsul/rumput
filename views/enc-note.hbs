@@ -1,6 +1,6 @@
 <div class="row g-4">
-    <div class="col-12 col-md-8 d-md-flex flex-column">
-        <div class="flex-grow-1">
+    <div class="col-12 col-lg-8">
+        <div class="">
             <input id="password" type="password" name="password" class="form-control" placeholder="Your password"
                 aria-label="Password" required>
             <div class="btn-group my-1" role="group" aria-label="Basic example">
@@ -12,12 +12,12 @@
             <div class="btn-group my-1" role="group" aria-label="Basic example">
                 <button type="button" class="btn btn-primary" title="Insert DateTime" id="insert-date-time">DT</button>
             </div>
-            <textarea class="form-control" id="content" name="links" style="height:90%;"
+            <textarea class="form-control" id="content" name="links" style="height:75vh;"
                 placeholder="Your input note"></textarea>
             <br>
         </div>
     </div>
-    <div class="col-12 col-md-4 border-separator flex-grow-1">
+    <div class="col-12 col-lg-4 border-separator d-none d-lg-block d-xl-block d-xxl-block">
         <h3 class="text-primary">Info</h3>
         <p>Write a note on the textarea, enter the password, then click "Save (SV)" or "Save and Close (SC)".</p>
         <p>You can decrypt the notes by entering the password again and click "Load (LD)"</p>
@@ -27,16 +27,27 @@
 </div>
 
 <script>
+    function stickToBottom() {
+        const ta = document.getElementById('content');
+        const windowHeight = window.innerHeight;
+        const textareaHeight = ta.offsetHeight;
+        ta.style.top = (windowHeight - textareaHeight) + 'px';
+    }
+
+    //
+    window.addEventListener('load', stickToBottom);
+    window.addEventListener('resize', stickToBottom);
+
     $(document).ready(function () {
         $("#insert-date-time").click(function () {
             let date = new Date();
-            let dateString = 
-            date.getFullYear() + "-" + 
-            (date.getMonth() + 1) + "-" + 
-            date.getDate() + " " + 
-            date.getHours() + ":" + 
-            date.getMinutes() + ":" + 
-            date.getSeconds();
+            let dateString =
+                date.getFullYear() + "-" +
+                (date.getMonth() + 1) + "-" +
+                date.getDate() + " " +
+                date.getHours() + ":" +
+                date.getMinutes() + ":" +
+                date.getSeconds();
 
             $("#content").val($("#content").val() + dateString);
             $("#content").focus();

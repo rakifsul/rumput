@@ -29,14 +29,27 @@ router.get('/', (req, res) => {
 
         defaultSE = JSON.parse(rd);
     } catch (err) {
-        defaultSE = undefined;
+        defaultSE = {
+            selected: "search-google"
+        };
+    }
+
+    let defaultAF;
+    try {
+        defaultAF = JSON.parse(fs.readFileSync(global.defaultAFPath, "utf-8"));
+        console.log(global.defaultAFPath)
+    } catch (err) {
+        defaultAF = {
+            selected: "autofocus-force-no"
+        };
     }
 
     res.render("setting", {
         layout: "main",
         title: "Rumput - Settings",
         header: "Settings",
-        defaultSE: defaultSE ? defaultSE.selected : ""
+        defaultSE: defaultSE.selected,
+        defaultAF: defaultAF.selected,
     });
 });
 
@@ -47,6 +60,17 @@ router.post("/default-se/save", (req, res) => {
     }
 
     fs.writeFileSync(global.defaultSEPath, JSON.stringify(data, null, 2));
+
+    res.json({ message: "Berhasil disimpan" });
+});
+
+router.post("/default-af/save", (req, res) => {
+    const data = req.body;
+    if (!data.selected) {
+        return res.status(400).json({ error: "Format JSON salah" });
+    }
+
+    fs.writeFileSync(global.defaultAFPath, JSON.stringify(data, null, 2));
 
     res.json({ message: "Berhasil disimpan" });
 });

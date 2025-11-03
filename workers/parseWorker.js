@@ -51,18 +51,39 @@ async function parse() {
     
     try {
         const oldBookmarks = JSON.parse(fs.readFileSync(path.join(resultDir, "bookmark.json")));
-        const totalBookmarks = [...oldBookmarks, ...results];
-        fs.writeFileSync(path.join(resultDir, "bookmark.json"), JSON.stringify(totalBookmarks, null, 2));
+        // const totalBookmarks = [...oldBookmarks, ...results];
+
+        // Gabungkan dan hapus duplikat berdasarkan URL
+        const combined = [...oldBookmarks, ...results];
+        const seen = new Set();
+        const unique = combined.filter(item => {
+            const normalizedUrl = item.url.trim().toLowerCase(); // normalisasi agar https/HTTP tidak beda
+            if (seen.has(normalizedUrl)) return false;
+            seen.add(normalizedUrl);
+            return true;
+        });
+
+        fs.writeFileSync(path.join(resultDir, "bookmark.json"), JSON.stringify(unique, null, 2));
 
         log("parsing completed")
 
-        await build(totalBookmarks, resultDir);
+        await build(unique, resultDir);
     } catch (err) {
-        fs.writeFileSync(path.join(resultDir, "bookmark.json"), JSON.stringify(results, null, 2));
+
+        const combined = results;
+        const seen = new Set();
+        const unique = combined.filter(item => {
+            const normalizedUrl = item.url.trim().toLowerCase(); // normalisasi agar https/HTTP tidak beda
+            if (seen.has(normalizedUrl)) return false;
+            seen.add(normalizedUrl);
+            return true;
+        });
+
+        fs.writeFileSync(path.join(resultDir, "bookmark.json"), JSON.stringify(unique, null, 2));
 
         log("parsing completed")
 
-        await build(results, resultDir);
+        await build(unique, resultDir);
     }
 
 

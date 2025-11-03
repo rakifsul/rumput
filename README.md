@@ -6,6 +6,7 @@ Personal and Multi Purpose Web Dashboard.
 
 - Search Box
 - URL Launchers
+- Triggers
 - Bookmarks
 - Encrypted Notes
 - Settings
@@ -19,7 +20,6 @@ Personal and Multi Purpose Web Dashboard.
 - Todo List
 - Password Manager
 - RSS Reader
-- Embed Scripts
 
 ## How to Install (using Docker)
 
@@ -98,6 +98,8 @@ So, if you found that this feature makes rumput not working, report me on issue 
 ![screenshot](./.screenshots/screenshot-2.png "Screenshot")
 
 ![screenshot](./.screenshots/screenshot-3.png "Screenshot")
+
+![screenshot](./.screenshots/screenshot-5.png "Screenshot")
 
 ![screenshot](./.screenshots/screenshot-4.png "Screenshot")
 

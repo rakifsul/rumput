@@ -1,5 +1,5 @@
 <div class="row g-4">
-    <div class="col-12 col-md-8">
+    <div class="col-12 col-lg-8">
         <h5>Default Search Engine</h5>
         <div class="dropdown">
             <button class="btn btn-dark dropdown-toggle w-100" type="button" id="dropdownMenuButton"
@@ -7,15 +7,29 @@
                 Choose a Default Search Engine
             </button>
             <ul id="se" class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" href="javascript:void(0);" data-value="search-google">Google</a></li>
-                <li><a class="dropdown-item" href="javascript:void(0);" data-value="search-yahoo">Yahoo!</a></li>
-                <li><a class="dropdown-item" href="javascript:void(0);" data-value="search-bing">Bing</a></li>
-                <li><a class="dropdown-item" href="javascript:void(0);" data-value="search-brave">Brave</a></li>
-                <li><a class="dropdown-item" href="javascript:void(0);" data-value="search-marginalia">Marginalia</a>
+                <li><a class="dropdown-item dropdown-se" href="javascript:void(0);" data-value="search-google">Google</a></li>
+                <li><a class="dropdown-item dropdown-se" href="javascript:void(0);" data-value="search-yahoo">Yahoo!</a></li>
+                <li><a class="dropdown-item dropdown-se" href="javascript:void(0);" data-value="search-bing">Bing</a></li>
+                <li><a class="dropdown-item dropdown-se" href="javascript:void(0);" data-value="search-brave">Brave</a></li>
+                <li><a class="dropdown-item dropdown-se" href="javascript:void(0);" data-value="search-marginalia">Marginalia</a>
                 </li>
             </ul>
         </div>
         <hr class="px-2">
+
+        <h5>Force Autofocus on New Tab</h5>
+        <div class="dropdown">
+            <button class="btn btn-dark dropdown-toggle w-100" type="button" id="dropdownMenuButton1"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                Choose Autofocus Behavior
+            </button>
+            <ul id="af" class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item dropdown-af" href="javascript:void(0);" data-value="autofocus-force-yes">Force Autofocus</a></li>
+                <li><a class="dropdown-item dropdown-af" href="javascript:void(0);" data-value="autofocus-force-no">Don't Force Autofocus</a></li>
+            </ul>
+        </div>
+        <hr class="px-2">
+
         <h5>Import Bookmarks</h5>
         <form id="bookmarkForm" class="px-2">
             <div class="text-center">
@@ -52,7 +66,7 @@
         </ul>
         <hr class="px-2">
     </div>
-    <div class="col-12 col-md-4 border-separator">
+    <div class="col-12 col-lg-4 border-separator d-none d-lg-block d-xl-block d-xxl-block">
         <h3 class="text-primary">Info</h3>
         <p>This page is configuration center. All of the elements may or may not be related to other pages.</p>
         <p>Bookmarks import is incremental. In case you want to replace your old bookmarks, go ahead and click "Delete
@@ -65,6 +79,7 @@
 
 <script>
     let defaultSearchEngine = {};
+    let defaultAutofocus = {}
     $(document).ready(function () {
 
 
@@ -146,7 +161,7 @@
         });
 
         markSEActive("{{ defaultSE }}")
-        $(".dropdown-item").on("click", async function (e) {
+        $(".dropdown-se").on("click", async function (e) {
             e.preventDefault();
 
             const selected = $(this).data("value");
@@ -158,8 +173,28 @@
             // Update teks tombol
             await saveDefaultSearchEngineToServer();
 
-            //$("#dropdownMenuButton").text($(this).text());
+            //
             markSEActive(selected);
+        });
+
+        //
+        
+        markAFActive("{{ defaultAF }}")
+        console.log("{{ defaultAF }}")
+        $(".dropdown-af").on("click", async function (e) {
+            e.preventDefault();
+
+            const selected = $(this).data("value");
+
+            // Update JSON
+            defaultAutofocus = { selected: selected };
+            console.log(defaultAutofocus)
+
+            // Update teks tombol
+            await saveDefaultAutofocusToServer();
+
+            //
+            markAFActive(selected);
         });
 
         $("#formFile").on("change", function (event) {
@@ -286,6 +321,23 @@
             });
     }
 
+    async function saveDefaultAutofocusToServer() {
+        const toSave = JSON.stringify(defaultAutofocus);
+        console.log(toSave)
+        fetch("/settings/default-af/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: toSave
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Data stored:", data);
+            })
+            .catch(err => {
+                console.error("Failed to save:", err);
+            });
+    }
+
     function markSEActive(inpSelected) {
         $("#se li a").each(function () {
             let isMatch = $(this).data("value") == inpSelected;
@@ -295,6 +347,19 @@
             } else {
                 $(this).removeClass("active");
                 // $("#dropdownMenuButton").text($(this).text());
+            }
+        });
+    }
+
+    function markAFActive(inpSelected) {
+        $("#af li a").each(function () {
+            let isMatch = $(this).data("value") == inpSelected;
+            if (isMatch) {
+                $(this).addClass("active");
+                $("#dropdownMenuButton1").text($(this).text());
+            } else {
+                $(this).removeClass("active");
+                // $("#dropdownMenuButton1").text($(this).text());
             }
         });
     }

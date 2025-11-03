@@ -5,17 +5,21 @@ import path from 'path';
 import bookmarkRouter from './routes/bookmark.js';
 import encNoteRouter from './routes/enc-note.js';
 import launcherRouter from './routes/launcher.js';
+import triggerRouter from './routes/triggers.js';
 import settingRouter from './routes/setting.js';
+import redirRouter from './routes/redir.js';
 
 const __dirname = import.meta.dirname;
 global.dirname = __dirname;
 global.uploadDir = path.join(__dirname, "uploads");
 global.resultDir = path.join(__dirname, "data");
 global.launcherPath = path.join(global.resultDir, "launcher.json");
+global.triggerPath = path.join(global.resultDir, "trigger.json");
 global.bookmarkPath = path.join(global.resultDir, "bookmark.json");
 global.indexPath = path.join(global.resultDir, "index.json");
 global.notePath = path.join(global.resultDir, "note.json");
 global.defaultSEPath = path.join(global.resultDir, "default-se.json");
+global.defaultAFPath = path.join(global.resultDir, "default-af.json");
 
 const app = express();
 
@@ -31,15 +35,8 @@ app.use("/settings", settingRouter);
 app.use("/enc-notes", encNoteRouter);
 app.use("/bookmarks", bookmarkRouter);
 app.use("/launchers", launcherRouter);
-
-app.get("/", (req, res) => {
-    // res.redirect("/launchers");
-    res.render("index", {
-        layout: "main",
-        title: "Rumput",
-        header: "Rumput"
-    });
-})
+app.use("/triggers", triggerRouter);
+app.get("/", redirRouter);
 
 const port = 3000;
 app.listen(port, function () {
