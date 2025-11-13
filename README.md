@@ -75,11 +75,11 @@ npm run dev
 
 ## If You are Using Brave (or any ads blocker)
 
-Start from this commit, rumput will autofocus to its search box on new tab opened.
+Start from this commit, rumput has option to force autofocus at new opened tab.
 
 This is a little bit tricky if you are using Brave or maybe other ads blocker.
 
-So, if you are using Brave, disable the pop up blocker.
+So, if you are using Brave, **disable the pop up blocker**.
 
 These screenshots show you how to do this.
 
@@ -87,9 +87,9 @@ These screenshots show you how to do this.
 
 ![after](./.screenshots/after.png "After disabling pop up blocker in Brave")
 
-I don't know how this feature will affect all browsers so far.
+Remember that **it's not recommended to use force autofocus if you set rumput as homepage without giving permission to allow popup**.
 
-So, if you found that this feature makes rumput not working, report me on issue tracker.
+Your browser will close instantly after being launched and it's really complicated to fix.
 
 ## Screenshot
 
