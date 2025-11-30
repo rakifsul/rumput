@@ -83,13 +83,13 @@ So, if you are using Brave, **disable the pop up blocker**.
 
 These screenshots show you how to do this.
 
+**Warning:**
+
+**It's not recommended to use force autofocus if you set rumput as homepage without giving permission to allow popup. Your browser will close instantly after being launched and it's really complicated to fix.**
+
 ![before](./.screenshots/before.png "Before disabling pop up blocker in Brave")
 
 ![after](./.screenshots/after.png "After disabling pop up blocker in Brave")
-
-Remember that **it's not recommended to use force autofocus if you set rumput as homepage without giving permission to allow popup**.
-
-Your browser will close instantly after being launched and it's really complicated to fix.
 
 ## Screenshot
 
@@ -99,9 +99,13 @@ Your browser will close instantly after being launched and it's really complicat
 
 ![screenshot](./.screenshots/screenshot-3.png "Screenshot")
 
+![screenshot](./.screenshots/screenshot-4.png "Screenshot")
+
 ![screenshot](./.screenshots/screenshot-5.png "Screenshot")
 
-![screenshot](./.screenshots/screenshot-4.png "Screenshot")
+![screenshot](./.screenshots/screenshot-6.png "Screenshot")
+
+![screenshot](./.screenshots/screenshot-7.png "Screenshot")
 
 ## Get More Precious Links
 
