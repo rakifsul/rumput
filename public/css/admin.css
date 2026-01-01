@@ -168,6 +168,12 @@ label {
     /* box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); */
 }
 
+.dashboard-card:active {
+    transform: translateY(5px) scale(1.00);
+    cursor: pointer;
+    /* box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); */
+}
+
 /* Custom Context Menu */
 #contextMenu {
     position: fixed;

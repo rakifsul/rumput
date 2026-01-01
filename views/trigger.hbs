@@ -100,6 +100,16 @@
                 console.log(err)
             }
         })
+        $(".dashboard-card").click(function (){
+            const $currentCard1 = $(this);
+            try{
+                
+                const scr = decodeURIComponent($currentCard1.attr("data-script"));
+                eval(scr);
+            } catch (err) {
+                console.log(err)
+            }
+        })
 
         $("#trigger-delete").click(async function () {
             $currentCard.remove();

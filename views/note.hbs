@@ -2,7 +2,7 @@
     <div class="col-12 col-lg-8">
         <div class="">
             <input id="password" type="password" name="password" class="form-control" placeholder="Your password"
-                aria-label="Password" required>
+                aria-label="Password" autofocus required>
             <div class="btn-group my-1" role="group" aria-label="Basic example">
                 <button type="button" class="btn btn-danger mx-1" title="Load" id="load">LD</button>
                 <button type="button" class="btn btn-danger mx-1" title="Save" id="save">SV</button>
@@ -22,6 +22,9 @@
         <p>You can view the notes by entering the password again and click "Load (LD)"</p>
         <p>If you close and reopen this app, then you just need to enter the password and click "Load (LD)".</p>
         <p>To clear both the password and the note temporarily, click "Clear (CL)".</p>
+        
+        <h3 class="text-danger">WARNING!</h3>
+        <p>Don't place important data at Notes because sometimes we modify the codes that causes data loss.</p>
     </div> 
 </div>
 
@@ -56,6 +59,15 @@
             $("#content").val("");
             $("#password").val("");
         });
+        
+        $("#password").on('keypress', function (e) {
+            if (e.which == 13) {
+                $("#load").click()
+
+                e.preventDefault()
+                return false
+            }
+        })
 
         $("#save").click(async function (e) {
             if (confirm("WARNING! Notes will be overwritten. Is it OK?")) {
