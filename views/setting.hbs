@@ -1,0 +1,366 @@
+<div class="row g-4">
+    <div class="col-12 col-lg-8">
+        <h5>Default Search Engine</h5>
+        <div class="dropdown">
+            <button class="btn btn-dark dropdown-toggle w-100" type="button" id="dropdownMenuButton"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                Choose a Default Search Engine
+            </button>
+            <ul id="se" class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item dropdown-se" href="javascript:void(0);" data-value="search-google">Google</a></li>
+                <li><a class="dropdown-item dropdown-se" href="javascript:void(0);" data-value="search-yahoo">Yahoo!</a></li>
+                <li><a class="dropdown-item dropdown-se" href="javascript:void(0);" data-value="search-bing">Bing</a></li>
+                <li><a class="dropdown-item dropdown-se" href="javascript:void(0);" data-value="search-brave">Brave</a></li>
+                <li><a class="dropdown-item dropdown-se" href="javascript:void(0);" data-value="search-marginalia">Marginalia</a>
+                </li>
+            </ul>
+        </div>
+        <hr class="px-2">
+
+        <h5>Force Autofocus on New Tab</h5>
+        <div class="dropdown">
+            <button class="btn btn-dark dropdown-toggle w-100" type="button" id="dropdownMenuButton1"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                Choose Autofocus Behavior
+            </button>
+            <ul id="af" class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item dropdown-af" href="javascript:void(0);" data-value="autofocus-force-yes">Force Autofocus</a></li>
+                <li><a class="dropdown-item dropdown-af" href="javascript:void(0);" data-value="autofocus-force-no">Don't Force Autofocus</a></li>
+            </ul>
+        </div>
+        <hr class="px-2">
+
+        <h5>Import Bookmarks</h5>
+        <form id="bookmarkForm" class="px-2">
+            <div class="text-center">
+                <input class="form-control form-control file-input" type="file" id="formFile" />
+                {{!-- <label for="formFile" class="btn btn-dark w-100">Import Bookmarks (HTML format)</label> --}}
+            </div>
+
+            <div>
+                <progress id="progressBar" class="w-100" value="0" max="100"></progress>
+                <textarea class="form-control" id="links" name="links" rows="12" placeholder="" disabled></textarea>
+                <div class="text-end">
+                    <div class="row">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-dark w-100">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <hr class="px-2">
+        <h5>Danger Zone</h5>
+        <ul class="sidebar-ul">
+            <li class="sidebar-li">
+                <button id="da-launcher" class="btn btn-danger w-100">Delete All Launchers</button>
+            </li>
+
+            <li class="sidebar-li">
+                <button id="da-bookmark" class="btn btn-danger w-100">Delete All Bookmarks</button>
+            </li>
+
+            <li class="sidebar-li">
+                <button id="da-note" class="btn btn-danger w-100">Delete All Notes</button>
+            </li>
+        </ul>
+        <hr class="px-2">
+    </div>
+    <div class="col-12 col-lg-4 border-separator d-none d-lg-block d-xl-block d-xxl-block">
+        <h3 class="text-primary">Info</h3>
+        <p>This page is configuration center. All of the elements may or may not be related to other pages.</p>
+        <p>Bookmarks import is incremental. In case you want to replace your old bookmarks, go ahead and click "Delete
+            All Bookmarks" first.</p>
+        <h3 class="text-danger">WARNING!</h3>
+        <p>Those red buttons at Danger Zone will delete your Rumput data permanently. Don't click them unless you know
+            what you are doing.</p>
+    </div>
+</div>
+
+<script>
+    let defaultSearchEngine = {};
+    let defaultAutofocus = {}
+    $(document).ready(function () {
+
+
+        $("#da-launcher").click(function () {
+            if (confirm("WARNING! Your launcher links will be removed.")) {
+                console.log("User chooses OK");
+
+                fetch("/settings/clear-launcher", {
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("Data has been cleaned up.");
+                        console.log(data);
+                    })
+                    .catch(err => {
+                        console.error("Failed to clean up data:", err);
+                    });
+            } else {
+                console.log("User chooses Cancel");
+            }
+        });
+
+        $("#da-bookmark").click(function () {
+            if (confirm("WARNING! Your bookmark links will be removed.")) {
+                console.log("User chooses OK");
+
+                // delete bookmarks
+                fetch("/settings/clear-bookmark", {
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("Data has been cleaned up.");
+                        console.log(data);
+                    })
+                    .catch(err => {
+                        console.error("Failed to cleanup data:", err);
+                    });
+
+                // delete indexes
+                fetch("/settings/clear-index", {
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("Data has been cleaned up.");
+                        console.log(data);
+                    })
+                    .catch(err => {
+                        console.error("Failed to cleanup data:", err);
+                    });
+            } else {
+                console.log("User chooses Cancel");
+            }
+        });
+
+        $("#da-note").click(function () {
+            if (confirm("WARNING! Your notes will be removed.")) {
+                console.log("User chooses OK");
+                fetch("/settings/clear-note", {
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("Data has been cleaned up.");
+                        console.log(data);
+                    })
+                    .catch(err => {
+                        console.error("Failed to cleanup data:", err);
+                    });
+            } else {
+                console.log("User chooses Cancel");
+            }
+        });
+
+        markSEActive("{{ defaultSE }}")
+        $(".dropdown-se").on("click", async function (e) {
+            e.preventDefault();
+
+            const selected = $(this).data("value");
+
+            // Update JSON
+            defaultSearchEngine = { selected: selected };
+            console.log(defaultSearchEngine)
+
+            // Update teks tombol
+            await saveDefaultSearchEngineToServer();
+
+            //
+            markSEActive(selected);
+        });
+
+        //
+        
+        markAFActive("{{ defaultAF }}")
+        console.log("{{ defaultAF }}")
+        $(".dropdown-af").on("click", async function (e) {
+            e.preventDefault();
+
+            const selected = $(this).data("value");
+
+            // Update JSON
+            defaultAutofocus = { selected: selected };
+            console.log(defaultAutofocus)
+
+            // Update teks tombol
+            await saveDefaultAutofocusToServer();
+
+            //
+            markAFActive(selected);
+        });
+
+        $("#formFile").on("change", function (event) {
+            $("#links").val("");
+
+            const input = this;
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const rawResult = e.target.result;
+                    const finalResult = parseLinks(rawResult);
+
+                    $("#links").val($("#links").val() + finalResult);
+                };
+
+                reader.onerror = function () {
+                    alert("Error: Reading File");
+                };
+
+                reader.readAsText(file);
+            }
+        });
+        const input = document.getElementById("formFile");
+        const progressBar = document.getElementById("progressBar");
+
+        $("#bookmarkForm").on("submit", async function (e) {
+            e.preventDefault();
+
+
+            const file = input.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/settings/upload-bookmark");
+
+            xhr.upload.onprogress = (event) => {
+                if (event.lengthComputable) {
+                    const percent = (event.loaded / event.total) * 100;
+                    progressBar.value = percent;
+                }
+            };
+
+            xhr.onload = async () => {
+                if (xhr.status === 200) {
+                    const resp = JSON.parse(xhr.responseText);
+                    console.log("Upload finished:", resp);
+
+                    const res = await fetch(`/settings/parse-bookmark`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ filePath: resp.filePath })
+                    });
+
+                    // set interval
+                    const iv = setInterval(async () => {
+                        const res1 = await fetch(`/settings/progress-check`, {
+                            method: "GET",
+                            headers: { "Content-Type": "application/json" }
+                        });
+
+                        const jsn = await res1.json();
+                        // console.log(jsn)
+                        progressBar.value = jsn.percent;
+
+                        if (progressBar.value >= 100) {
+                            progressBar.value = 0;
+                            clearInterval(iv)
+                            $("#links").val("");
+                        }
+                    }, 1000)
+                } else {
+                    console.error("Upload failed.");
+                    progressBar.value = 0;
+                }
+            };
+
+            xhr.send(formData);
+
+        });
+
+        function parseLinks(inp) {
+            let out = "";
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(inp, "text/html");
+
+            const links = doc.querySelectorAll("a");
+            links.forEach(link => {
+                const href = link.getAttribute("href");
+                const text = link.textContent.trim().replace(/<[^>]*>?/gm, '');
+                if (href) {
+                    //out += `${href}\n`;
+                    const obj = {
+                        title: text,
+                        url: href
+                    }
+
+                    const json = JSON.stringify(obj);
+                    out += `${json}\n`;
+                }
+            });
+            return out;
+        }
+    });
+
+    async function saveDefaultSearchEngineToServer() {
+        const toSave = JSON.stringify(defaultSearchEngine);
+        console.log(toSave)
+        fetch("/settings/default-se/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: toSave
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Data stored:", data);
+            })
+            .catch(err => {
+                console.error("Failed to save:", err);
+            });
+    }
+
+    async function saveDefaultAutofocusToServer() {
+        const toSave = JSON.stringify(defaultAutofocus);
+        console.log(toSave)
+        fetch("/settings/default-af/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: toSave
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Data stored:", data);
+            })
+            .catch(err => {
+                console.error("Failed to save:", err);
+            });
+    }
+
+    function markSEActive(inpSelected) {
+        $("#se li a").each(function () {
+            let isMatch = $(this).data("value") == inpSelected;
+            if (isMatch) {
+                $(this).addClass("active");
+                $("#dropdownMenuButton").text($(this).text());
+            } else {
+                $(this).removeClass("active");
+                // $("#dropdownMenuButton").text($(this).text());
+            }
+        });
+    }
+
+    function markAFActive(inpSelected) {
+        $("#af li a").each(function () {
+            let isMatch = $(this).data("value") == inpSelected;
+            if (isMatch) {
+                $(this).addClass("active");
+                $("#dropdownMenuButton1").text($(this).text());
+            } else {
+                $(this).removeClass("active");
+                // $("#dropdownMenuButton1").text($(this).text());
+            }
+        });
+    }
+</script>

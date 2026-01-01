@@ -1,0 +1,72 @@
+<div class="row g-4">
+    <div class="col-12 col-lg-8">
+        {{!-- <div class="input-group input-group-lg shadow-sm">
+            <input id="query" type="text" name="q" class="form-control" placeholder="Your query..." aria-label="Search"
+                required>
+            <button id="search" class="btn btn-dark" type="submit">Search</button>
+        </div> --}}
+        <div class="shadow-sm">
+            <input id="query" type="text" name="q" class="form-control" placeholder="Your query..." aria-label="Search"
+                required>
+        </div>
+        <hr>
+        <ul id="results" class="list-group">
+        </ul>
+    </div>
+    <div class="col-12 col-lg-4 border-separator d-none d-lg-block d-xl-block d-xxl-block">
+        <h3 class="text-primary">Info</h3>
+        <p>Before using this feature, import your html bookmarks from Settings.</p>
+        <p>To search for bookmarks, type any characters in the search box. The results will be shown while you're
+            typing.</p>
+        <p>Search syntax:</p>
+        <ul>
+            <li>foo</li>
+            <li>foo bar</li>
+            <li>foo*</li> 
+            <li>*oo</li>
+            <li>*foo*</li>
+            <li>f*o</li>
+            <li>foo~1</li>
+        </ul>
+        <p>See more at <a href="https://lunrjs.com/guides/searching.html" target="_blank">the documentation</a></p>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $("#search").click(function () {
+
+        });
+
+        $("#query").focus();
+        $("#query").keydown(function () {
+            setTimeout(function () {
+                doSearch()
+            }, 500)
+
+            if (event.key === "Enter") {
+                doSearch()
+            }
+        });
+
+        function doSearch() {
+            const query = $("#query").val();
+            fetch(`/bookmarks/search?q=${query}`, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log("Data found:", data);
+                    $("#results").empty();
+                    data.forEach((item) => {
+                        $("#results").append(`<li class="list-group-item"><a href="${item.url}" target="_blank">${item.title}</a></li>`);
+                    })
+                })
+                .catch(err => {
+                    console.error("Failed to search:", err);
+                });
+        }
+    })
+</script>

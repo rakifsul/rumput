@@ -1,0 +1,25 @@
+{
+  "name": "rumput",
+  "version": "2026.01.01-0734",
+  "description": "Personal and Multi Purpose Web Dashboard",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon --ignore uploads/ --ignore data/ index.js"
+  },
+  "keywords": [],
+  "author": "www.rakifsul.my.id",
+  "private": true,
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cheerio": "^1.1.2",
+    "express": "^5.1.0",
+    "express-handlebars": "^8.0.3",
+    "lunr": "^2.3.9",
+    "multer": "^2.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

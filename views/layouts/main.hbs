@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+
+    <link rel="icon" href="/public/img/favicon.svg" type="image/svg+xml" sizes="any">
+    <link rel="stylesheet" href="/public/vendor/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/public/vendor/bootstrap-icons/bootstrap-icons.css" />
+
+    <script src="/public/vendor/jquery/jquery.min.js"></script>
+    <script src="/public/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    {{!--
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> --}}
+
+    <script src="/public/js/admin.js" defer></script>
+
+    <link rel="stylesheet" href="/public/css/admin.css" />
+</head>
+
+<body class="bg-light mt-3">
+    <div id="sidebar" class="sidebar bg-dark">
+        <div class="sidebar-brand">
+            <img class="img-fluid sidebar-brand-img mx-auto d-block" src="/public/img/logo.svg" alt="icon" width="100"
+                height="100">
+            <h2 class="text-light text-center"><span class="elm-visible-desktop">Rumput</span></h2>
+        </div>
+
+        <hr class="text-light">
+
+        <ul class="sidebar-ul">
+            <li class="sidebar-li">
+                <a class="btn btn-outline-light w-100 btn-mobile" data-url="/" href="/"><span
+                        class="elm-visible-mobile">LC</span><span class="elm-visible-desktop">Launchers</span>
+                </a>
+            </li>
+
+            <li class="sidebar-li">
+                <a class="btn btn-outline-light w-100 btn-mobile" data-url="/bookmark" href="/triggers"><span
+                        class="elm-visible-mobile">TG</span><span class="elm-visible-desktop">Triggers</span>
+                </a>
+            </li>
+
+            <li class="sidebar-li">
+                <a class="btn btn-outline-light w-100 btn-mobile" data-url="/bookmark" href="/bookmarks"><span
+                        class="elm-visible-mobile">BK</span><span class="elm-visible-desktop">Bookmarks</span>
+                </a>
+            </li>
+
+            <li class="sidebar-li">
+                <a class="btn btn-outline-light w-100 btn-mobile" data-url="/note" href="/notes"><span
+                        class="elm-visible-mobile">NT</span><span class="elm-visible-desktop">Notes</span>
+                </a>
+            </li>
+
+            <li class="sidebar-li position-absolute bottom-0 start-0 w-100">
+                <hr class="text-light">
+                <a class="btn btn-outline-light w-100 btn-mobile mb-2" data-url="https://www.rakifsul.my.id" href="https://www.rakifsul.my.id"><span
+                        class="elm-visible-mobile">BI</span><span class="elm-visible-desktop">My Bio</span>
+                </a>
+                <a class="btn btn-outline-light w-100 btn-mobile mb-2" data-url="https://rakifsul.substack.com" href="https://rakifsul.substack.com"><span
+                        class="elm-visible-mobile">BL</span><span class="elm-visible-desktop">My Blog</span>
+                </a>
+                <a class="btn btn-outline-light w-100 btn-mobile mb-2" data-url="https://karyakarsa.com/rakifsul" href="https://karyakarsa.com/rakifsul"><span
+                        class="elm-visible-mobile">SM</span><span class="elm-visible-desktop">Support Me</span>
+                </a>
+                <a class="btn btn-outline-light w-100 btn-mobile" data-url="/settings" href="/settings"><span
+                        class="elm-visible-mobile">SS</span><span class="elm-visible-desktop">Settings</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main">
+        <header>
+            <h1 class="mb-4 text-center">{{header}}</h1>
+        </header>
+        <hr>
+        <div>
+            {{{body}}}
+        </div>
+        <!-- Content -->
+        {{!-- <div class="container-fluid px-3">
+            <header>
+                <h1 class="mb-4 text-center">{{header}}</h1>
+            </header>
+            <hr>
+            <div>
+                {{{body}}}
+            </div>
+        </div> --}}
+    </div>
+</body>
+
+</html>

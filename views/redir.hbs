@@ -1,0 +1,14 @@
+<script>
+    const af = "{{ defaultAF }}";
+    console.log(af);
+    
+    if (af === "autofocus-force-no") {
+        window.location.href = window.location.href + "launchers"
+    }
+
+    setTimeout(function () {
+        const oldWindow = window;
+        window.open(window.location.href + "launchers");
+        oldWindow.close();
+    }, 50)
+</script>

@@ -1,0 +1,131 @@
+<div class="row g-4">
+    <div class="col-12 col-lg-8">
+        <div class="">
+            <input id="password" type="password" name="password" class="form-control" placeholder="Your password"
+                aria-label="Password" required>
+            <div class="btn-group my-1" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-danger mx-1" title="Load" id="load">LD</button>
+                <button type="button" class="btn btn-danger mx-1" title="Save" id="save">SV</button>
+                <button type="button" class="btn btn-danger mx-1" title="Save and Close" id="save-close">SC</button>
+                <button type="button" class="btn btn-danger mx-1" title="Clear" id="clear">CL</button>
+                <button type="button" class="btn btn-dark mx-1" title="Insert DateTime" id="insert-date-time">DT</button>
+            </div>
+          
+            <textarea class="form-control" id="content" name="links" style="height:75vh;"
+                placeholder="Your input note"></textarea>
+            <br>
+        </div>
+    </div>
+    <div class="col-12 col-lg-4 border-separator d-none d-lg-block d-xl-block d-xxl-block">
+        <h3 class="text-primary">Info</h3>
+        <p>Write a note on the textarea, enter the password, then click "Save (SV)" or "Save and Close (SC)".</p>
+        <p>You can view the notes by entering the password again and click "Load (LD)"</p>
+        <p>If you close and reopen this app, then you just need to enter the password and click "Load (LD)".</p>
+        <p>To clear both the password and the note temporarily, click "Clear (CL)".</p>
+    </div> 
+</div>
+
+<script>
+    function stickToBottom() {
+        const ta = document.getElementById('content');
+        const windowHeight = window.innerHeight;
+        const textareaHeight = ta.offsetHeight;
+        ta.style.top = (windowHeight - textareaHeight) + 'px';
+    }
+
+    //
+    window.addEventListener('load', stickToBottom);
+    window.addEventListener('resize', stickToBottom);
+
+    $(document).ready(function () {
+        $("#insert-date-time").click(function () {
+            let date = new Date();
+            let dateString =
+                date.getFullYear() + "-" +
+                (date.getMonth() + 1) + "-" +
+                date.getDate() + " " +
+                date.getHours() + ":" +
+                date.getMinutes() + ":" +
+                date.getSeconds();
+
+            $("#content").val($("#content").val() + dateString);
+            $("#content").focus();
+        });
+
+        $("#clear").click(function () {
+            $("#content").val("");
+            $("#password").val("");
+        });
+
+        $("#save").click(async function (e) {
+            if (confirm("WARNING! Notes will be overwritten. Is it OK?")) {
+                console.log("User chooses OK");
+
+                //
+                const password = $("#password").val();
+                const content = $("#content").val();
+
+                const res = await fetch(`/notes/store`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        pass: password,
+                        content: content
+                    })
+                });
+
+                const jsn = await res.json();
+            } else {
+                console.log("User chooses Cancel");
+                return;
+            }
+        });
+
+        $("#save-close").click(async function (e) {
+            if (confirm("WARNING! Notes will be overwritten. Is it OK?")) {
+                console.log("User chooses OK");
+
+                //
+                const password = $("#password").val();
+                const content = $("#content").val();
+
+                const res = await fetch(`/notes/store`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        pass: password,
+                        content: content
+                    })
+                });
+
+                const jsn = await res.json();
+            } else {
+                console.log("User chooses Cancel");
+                return;
+            }
+
+            $("#content").val("");
+            $("#password").val("");
+        });
+
+        $("#load").click(async function (e) {
+            const password = $("#password").val();
+
+            const res = await fetch(`/notes/retrieve`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    pass: password
+                })
+            });
+
+            const output = await res.json();
+
+            if (output.error) {
+                alert("WARNING! Password didn't match.")
+            }
+
+            $("#content").val(output.content)
+        });
+    })
+</script>

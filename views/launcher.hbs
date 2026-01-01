@@ -1,0 +1,308 @@
+<div class="mb-3">
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-6 mb-2">
+            <div class="input-group mb-3">
+                <input id="query" type="text" placeholder="Type here and enter or click the search engines dropdown..." class="form-control"
+                    aria-label="Text input with dropdown button" autocomplete="off" autofocus>
+                <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">Search</button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" id="search-google" href="javascript:void(0);">Google</a></li>
+                    <li><a class="dropdown-item" id="search-yahoo" href="javascript:void(0);">Yahoo!</a></li>
+                    <li><a class="dropdown-item" id="search-bing" href="javascript:void(0);">Bing</a></li>
+                    <li><a class="dropdown-item" id="search-brave" href="javascript:void(0);">Brave</a></li>
+                    <li><a class="dropdown-item" id="search-marginalia" href="javascript:void(0);">Marginalia</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-6 mb-2">
+            <button class="btn btn-dark w-100" data-bs-toggle="modal" data-bs-target="#itemModal">
+                <i class="bi bi-plus-lg"></i> Add Launcher
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<div class="row g-4" id="dashboardGrid">
+    {{#each launcher}}
+    <div class="col-4 col-md-3 col-lg-1 dashboard-card" id="{{this.id}}" data-title="{{this.title}}"
+        data-link="{{this.url}}" data-icon="{{this.icon}}" title="{{this.title}}" draggable="true" ondragstart="dragstartHandler(event)"
+        ondrop="dropHandler(event)" ondragover="dragoverHandler(event)">
+        <a href="{{this.url}}" class="text-decoration-none">
+            <div class="card text-center h-100 border-0 shadow-sm">
+                <div class="card-body px-0">
+                    <i class="display-5 text-danger">{{this.icon}}</i>
+                    {{!-- <h6 class="mt-3 text-dark">{{this.title}}</h6> --}}
+                </div>
+            </div>
+        </a>
+    </div>
+    {{/each}}
+</div>
+
+<!-- Modal Tambah/Edit -->
+<div class="modal fade" id="itemModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="itemForm" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add / Edit Icon</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <input type="hidden" id="editIndex">
+                <div class="mb-3">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-control" id="titleInput" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Link</label>
+                    <input type="url" class="form-control" id="linkInput" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Alias</label>
+                    <input type="text" class="form-control" id="iconInput" required>
+                    <small class="text-muted">Example: Home becomes HO</small>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Context Menu -->
+<div id="contextMenu" class="dropdown-menu shadow">
+    <button class="dropdown-item" id="openTab">Open in New Tab</button>
+    <!-- <button class="dropdown-item" id="openIncognito">Open in Incognito</button> -->
+    <div class="dropdown-divider"></div>
+    <button class="dropdown-item" id="editItem">Edit</button>
+    <button class="dropdown-item text-danger" id="deleteItem">Delete</button>
+</div>
+
+<script>
+    $(document).ready(function () {
+        let $currentCard = null;
+        console.log("{{defaultSE}}")
+        const defaultSearch = '#{{defaultSE}}';
+        // $(defaultSearch).click(doSearchDefault);
+        $('#search-google').click(doSearchGoogle);
+        $('#search-yahoo').click(doSearchYahoo);
+        $('#search-bing').click(doSearchBing);
+        $('#search-brave').click(doSearchBrave);
+        $('#search-marginalia').click(doSearchMarginalia);
+        $(document).on('keypress', function (e) {
+            if (e.which == 13) {
+                $(defaultSearch).click()
+
+                e.preventDefault()
+                return false
+            }
+        })
+
+        // Tombol Tambah → selalu reset ke mode Add
+        $("[data-bs-target='#itemModal']").on("click", function () {
+            $currentCard = null;
+            $("#itemForm")[0].reset();
+        });
+        // Tambah/Edit Submit
+        $("#itemForm").on("submit", async function (e) {
+            e.preventDefault();
+            const id = "no-id";//"launcher-" + Date.now();
+            console.log(id)
+            const title = $("#titleInput").val();
+            const link = $("#linkInput").val();
+            const icon = $("#iconInput").val();
+            //alert(title)
+
+            if ($currentCard) {
+                // Edit existing card.
+                //alert('sdsdfd ' + title)
+                $currentCard.attr("data-title", title);
+                $currentCard.attr("data-link", link);
+                $currentCard.attr("data-icon", icon);
+                $currentCard.find("a").attr("href", link);
+                $currentCard.find("i").text(icon);
+                $currentCard.find("h6").text(title);
+            } else {
+                // Add new card
+                const newCard = $(`
+                    <div class="col-6 col-md-3 col-lg-2 dashboard-card" id="${id}" data-title="${title}" data-link="${link}" data-icon="${icon}"
+                    draggable="true" ondragstart="dragstartHandler(event)"
+                    ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"
+                    >
+                        <a href="${link}" class="text-decoration-none">
+                            <div class="card text-center h-100 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <i class="display-4 text-danger">${icon}</i>
+                                    <h6 class="mt-3 text-dark">${title}</h6>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                `);
+                $("#dashboardGrid").append(newCard);
+            }
+
+            //$("#itemForm")[0].reset();
+            $("#itemModal").modal("hide");
+            //$currentCard = null;
+
+            await saveLinksToServer()
+        });
+
+        // Klik kanan pada card
+        $(document).on("contextmenu", ".dashboard-card", function (e) {
+            e.preventDefault();
+            $currentCard = $(this);
+
+            $("#contextMenu")
+                .css({ top: e.pageY, left: e.pageX })
+                .show();
+        });
+
+        // Klik di luar -> tutup menu
+        $(document).click(function () {
+            $("#contextMenu").hide();
+        });
+
+        // Menu actions
+        $("#openTab").click(function () {
+            const link = $currentCard.data("link");
+            window.open(link, "_blank");
+        });
+
+        $("#openIncognito").click(function () {
+            const link = $currentCard.data("link");
+            alert("This feature has not been implemented yet.");
+        });
+
+        $("#editItem").click(function () {
+            $("#titleInput").val($currentCard.attr("data-title"));
+            $("#linkInput").val($currentCard.attr("data-link"));
+            $("#iconInput").val($currentCard.attr("data-icon"));
+            $("#itemModal").modal("show");
+        });
+
+        $("#deleteItem").click(async function () {
+            $currentCard.remove();
+            $currentCard = null;
+            await saveLinksToServer();
+        });
+    });
+
+    //
+    function doSearchDefault() {
+        window.open(`https://www.google.com/search?q=${$('#query').val()}`, '_self');
+    }
+    function doSearchGoogle() {
+        window.open(`https://www.google.com/search?q=${$('#query').val()}`, '_self');
+    }
+    function doSearchYahoo() {
+        window.open(`https://id.search.yahoo.com/search?p=${$('#query').val()}`, '_self');
+    }
+    function doSearchBing() {
+        window.open(`https://www.bing.com/search?q=${$('#query').val()}`, '_self');
+    }
+    function doSearchBrave() {
+        window.open(`https://search.brave.com/search?q=${$('#query').val()}`, '_self');
+    }
+    function doSearchMarginalia() {
+        window.open(`https://marginalia-search.com/search?query=${$('#query').val()}&profile=corpo`, '_self');
+    }
+
+    // Simpan data ke backend
+    async function saveLinksToServer() {
+        const launcher = [];
+        let countedId = 0;
+        $(".dashboard-card").each(function () {
+            //alert($(this).data("title"))
+            console.log(countedId)
+            launcher.push({
+                id: countedId.toString(),
+                url: $(this).data("link"),
+                title: $(this).data("title"),
+                icon: $(this).data("icon")
+            });
+            ++countedId;
+        });
+
+        console.log(launcher)
+        fetch("/launchers/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ launcher })
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Data stored:", data);
+                window.location.reload();
+            })
+            .catch(err => {
+                console.error("Failed to save:", err);
+            });
+    }
+
+    function dragstartHandler(ev) {
+        ev.dataTransfer.setData("text", ev.currentTarget.id);
+    }
+
+    function dragoverHandler(ev) {
+        ev.preventDefault();
+    }
+
+    async function dropHandler(ev) {
+        ev.preventDefault();
+        const dashboardGrid = $("#dashboardGrid");
+        const draggedId = ev.dataTransfer.getData("text");
+        const draggedEl = $("#" + draggedId);
+
+        const targetId = ev.currentTarget.id;
+        const targetEl = $("#" + targetId);
+
+        if (draggedEl !== targetEl) {
+            draggedEl.insertBefore(targetEl);
+
+            await saveLinksToServer();
+        }
+    }
+
+    async function dropHandlerOld(ev) {
+        ev.preventDefault();
+        const draggedId = ev.dataTransfer.getData("text");
+        const draggedEl = $("#" + draggedId);
+
+        const targetId = ev.currentTarget.id;
+        const targetEl = $("#" + targetId);
+
+        if (draggedEl !== targetEl) {
+            let temp = {
+                title: targetEl.attr("data-title"),
+                link: targetEl.attr("data-link"),
+                icon: targetEl.attr("data-icon"),
+            }
+
+            targetEl.attr("data-title", draggedEl.attr("data-title"));
+            targetEl.attr("data-link", draggedEl.attr("data-link"));
+            targetEl.attr("data-icon", draggedEl.attr("data-icon"));
+            targetEl.find("a").attr("href", draggedEl.attr("data-link"));
+            targetEl.find("i").text(draggedEl.attr("data-icon"));
+            targetEl.find("h6").text(draggedEl.attr("data-title"));
+
+            draggedEl.attr("data-title", temp.title);
+            draggedEl.attr("data-link", temp.link);
+            draggedEl.attr("data-icon", temp.icon);
+            draggedEl.find("a").attr("href", temp.link);
+            draggedEl.find("i").text(temp.icon);
+            draggedEl.find("h6").text(temp.title);
+
+            await saveLinksToServer();
+        }
+    }
+
+
+</script>
