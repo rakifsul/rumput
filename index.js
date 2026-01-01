@@ -17,7 +17,7 @@ global.launcherPath = path.join(global.resultDir, "launcher.json");
 global.triggerPath = path.join(global.resultDir, "trigger.json");
 global.bookmarkPath = path.join(global.resultDir, "bookmark.json");
 global.indexPath = path.join(global.resultDir, "index.json");
-global.notePath = path.join(global.resultDir, "note.json");
+global.notePath = path.join(global.resultDir, "note-plaintext.json");
 global.defaultSEPath = path.join(global.resultDir, "default-se.json");
 global.defaultAFPath = path.join(global.resultDir, "default-af.json");
 
