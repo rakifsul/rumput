@@ -116,4 +116,4 @@ These screenshots show you how to do this.
 
 ## Get More Precious Links
 
-- [www.rakifsul.my.id](https://www.rakifsul.my.id)
+- [www.rakifsul.my.id](https://rakifsul.github.io/#https://www.rakifsul.my.id)
