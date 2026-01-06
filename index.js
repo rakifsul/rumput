@@ -6,6 +6,7 @@ import bookmarkRouter from './routes/bookmark.js';
 import noteRouter from './routes/note.js';
 import launcherRouter from './routes/launcher.js';
 import triggerRouter from './routes/triggers.js';
+import vdEmbedRouter from './routes/vd-embed.js';
 import settingRouter from './routes/setting.js';
 import redirRouter from './routes/redir.js';
 
@@ -15,6 +16,7 @@ global.uploadDir = path.join(__dirname, "uploads");
 global.resultDir = path.join(__dirname, "data");
 global.launcherPath = path.join(global.resultDir, "launcher.json");
 global.triggerPath = path.join(global.resultDir, "trigger.json");
+global.vdEmbedPath = path.join(global.resultDir, "vd-embed.json");
 global.bookmarkPath = path.join(global.resultDir, "bookmark.json");
 global.indexPath = path.join(global.resultDir, "index.json");
 global.notePath = path.join(global.resultDir, "note-plaintext.json");
@@ -36,6 +38,7 @@ app.use("/notes", noteRouter);
 app.use("/bookmarks", bookmarkRouter);
 app.use("/launchers", launcherRouter);
 app.use("/triggers", triggerRouter);
+app.use("/vd-embeds", vdEmbedRouter);
 app.get("/", redirRouter);
 
 const port = process.env.RUMPUT_PORT || 3000;

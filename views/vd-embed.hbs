@@ -1,0 +1,186 @@
+<div class="row g-4">
+    <div class="col-12 col-lg-8">
+        <div class="row">
+            <div class="col-12 mb-2">
+                <button class="btn btn-dark w-100" data-bs-toggle="modal" data-bs-target="#itemModal">
+                    <i class="bi bi-plus-lg"></i> Add Video Embed
+                </button>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row g-4" id="dashboardGrid">
+            {{#each vdEmbed}}
+            <div class="col-12 col-md-6 col-lg-6 dashboard-card" id="{{this.id}}" data-title="{{this.title}}"
+                data-url="{{this.url}}">
+                <div class="card text-center h-100 border-0 shadow-sm bg-secondary">
+                    <div class="card-body pb-5">
+                        <div class="ratio ratio-16x9">
+                            <iframe src="{{this.url}}"
+                                title="YouTube video player" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    <div class="col-12 col-lg-4 border-separator d-none d-lg-block d-xl-block d-xxl-block">
+        <h3 class="text-primary">Info</h3>
+        <p>This is video embeds page. You can put your favorite YouTube videos here as embedded content.</p>
+        <p>Only YouTube videos are supported until now.</p>
+    </div>
+</div>
+
+<!-- Modal Tambah/Edit -->
+<div class="modal fade" id="itemModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="itemForm" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add / Edit Video Embed</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <input type="hidden" id="editIndex">
+                <div class="mb-3">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-control" id="titleInput" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Embed URL</label>
+                    <input type="text" class="form-control" id="urlInput" required>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Context Menu -->
+<div id="contextMenu" class="dropdown-menu shadow">
+    <button class="dropdown-item" id="vd-embed-edit">Edit</button>
+    <button class="dropdown-item text-danger" id="vd-embed-delete">Delete</button>
+</div>
+
+<script>
+    $(document).ready(function () {
+        let $currentCard = null;
+
+        // Klik kanan pada card
+        $(document).on("contextmenu", ".dashboard-card", function (e) {
+            e.preventDefault();
+            $currentCard = $(this);
+
+            $("#contextMenu")
+                .css({ top: e.pageY, left: e.pageX })
+                .show();
+        });
+
+        // Klik di luar -> tutup menu
+        $(document).click(function () {
+            $("#contextMenu").hide();
+        });
+
+        $("#vd-embed-edit").click(function () {
+            $("#titleInput").val($currentCard.attr("data-title"));
+            $("#urlInput").val($currentCard.attr("data-url"));
+            $("#itemModal").modal("show");
+        });
+
+        $("#vd-embed-delete").click(async function () {
+            $currentCard.remove();
+            $currentCard = null;
+            await saveVdEmbedsToServer();
+        });
+
+        // Tombol Tambah → selalu reset ke mode Add
+        $("[data-bs-target='#itemModal']").on("click", function () {
+            $currentCard = null;
+            $("#itemForm")[0].reset();
+        });
+        // Tambah/Edit Submit
+        $("#itemForm").on("submit", async function (e) {
+            e.preventDefault();
+            const id = "no-id";//"launcher-" + Date.now();
+            console.log(id)
+            const title = $("#titleInput").val();
+            const url = getYoutubeEmbedUrl($("#urlInput").val());
+            console.log(url)
+
+            if ($currentCard) {
+                // Edit existing card.
+                //alert('sdsdfd ' + title)
+                $currentCard.attr("data-title", title);
+                $currentCard.attr("data-url", url);
+            } else {
+                // Add new card
+                const newCard = $(`
+                    <div class="col-12 col-md-6 col-lg-6 dashboard-card" id="${id}" data-title="${title}" data-url="${url}">
+                        <div class="card text-center h-100 border-0 shadow-sm bg-secondary">
+                            <div class="card-body pb-5">
+                                <div class="ratio ratio-16x9">
+                                    <iframe src="${url}"
+                                        title="YouTube video player" frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                $("#dashboardGrid").append(newCard);
+            }
+
+            //$("#itemForm")[0].reset();
+            $("#itemModal").modal("hide");
+            //$currentCard = null;
+
+            await saveVdEmbedsToServer()
+        });
+    })
+
+    async function saveVdEmbedsToServer() {
+        const vdEmbed = [];
+        let countedId = 0;
+        $(".dashboard-card").each(function () {
+            //alert($(this).data("title"))
+            console.log(countedId)
+            vdEmbed.push({
+                id: countedId.toString(),
+                title: $(this).data("title"),
+                url: $(this).data("url")
+            });
+            ++countedId;
+        });
+
+        console.log(vdEmbed)
+        fetch("/vd-embeds/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ vdEmbed })
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Data stored:", data);
+                window.location.reload();
+            })
+            .catch(err => {
+                console.error("Failed to save:", err);
+            });
+    }
+
+    function getYoutubeEmbedUrl(url) {
+        const regex =
+            /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+        const match = url.match(regex);
+        return match ? `https://www.youtube.com/embed/${match[1]}` : null;
+    }
+</script>
