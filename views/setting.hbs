@@ -2,7 +2,7 @@
     <div class="col-12 col-lg-8">
         <h5>Default Search Engine</h5>
         <div class="dropdown">
-            <button class="btn btn-dark dropdown-toggle w-100" type="button" id="dropdownMenuButton"
+            <button class="btn btn-dark btn-sm dropdown-toggle w-100" type="button" id="dropdownMenuButton"
                 data-bs-toggle="dropdown" aria-expanded="false">
                 Choose a Default Search Engine
             </button>
@@ -19,7 +19,7 @@
 
         <h5>Force Autofocus on New Tab</h5>
         <div class="dropdown">
-            <button class="btn btn-dark dropdown-toggle w-100" type="button" id="dropdownMenuButton1"
+            <button class="btn btn-dark btn-sm dropdown-toggle w-100" type="button" id="dropdownMenuButton1"
                 data-bs-toggle="dropdown" aria-expanded="false">
                 Choose Autofocus Behavior
             </button>
@@ -43,7 +43,7 @@
                 <div class="text-end">
                     <div class="row">
                         <div class="col-12">
-                            <button type="submit" class="btn btn-dark w-100">Submit</button>
+                            <button type="submit" class="btn btn-dark btn-sm w-100">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -53,15 +53,23 @@
         <h5>Danger Zone</h5>
         <ul class="sidebar-ul">
             <li class="sidebar-li">
-                <button id="da-launcher" class="btn btn-danger w-100">Delete All Launchers</button>
+                <button id="da-launcher" class="btn btn-danger btn-sm w-100">Delete All Launchers</button>
             </li>
 
             <li class="sidebar-li">
-                <button id="da-bookmark" class="btn btn-danger w-100">Delete All Bookmarks</button>
+                <button id="da-bookmark" class="btn btn-danger btn-sm w-100">Delete All Bookmarks</button>
             </li>
 
             <li class="sidebar-li">
-                <button id="da-note" class="btn btn-danger w-100">Delete All Notes</button>
+                <button id="da-note" class="btn btn-danger btn-sm w-100">Delete All Notes</button>
+            </li>
+
+            <li class="sidebar-li">
+                <button id="da-trigger" class="btn btn-danger btn-sm w-100">Delete All Triggers</button>
+            </li>
+
+            <li class="sidebar-li">
+                <button id="da-video" class="btn btn-danger btn-sm w-100">Delete All Videos</button>
             </li>
         </ul>
         <hr class="px-2">
@@ -154,6 +162,48 @@
                     })
                     .catch(err => {
                         console.error("Failed to cleanup data:", err);
+                    });
+            } else {
+                console.log("User chooses Cancel");
+            }
+        });
+
+        $("#da-trigger").click(function () {
+            if (confirm("WARNING! Your triggers will be removed.")) {
+                console.log("User chooses OK");
+
+                fetch("/settings/clear-trigger", {
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("Data has been cleaned up.");
+                        console.log(data);
+                    })
+                    .catch(err => {
+                        console.error("Failed to clean up data:", err);
+                    });
+            } else {
+                console.log("User chooses Cancel");
+            }
+        });
+
+        $("#da-video").click(function () {
+            if (confirm("WARNING! Your videos will be removed.")) {
+                console.log("User chooses OK");
+
+                fetch("/settings/clear-video", {
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("Data has been cleaned up.");
+                        console.log(data);
+                    })
+                    .catch(err => {
+                        console.error("Failed to clean up data:", err);
                     });
             } else {
                 console.log("User chooses Cancel");

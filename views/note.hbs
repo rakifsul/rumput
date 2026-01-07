@@ -1,17 +1,17 @@
 <div class="row g-4">
     <div class="col-12 col-lg-8">
         <div class="">
-            <input id="password" type="password" name="password" class="form-control" placeholder="Your password"
+            <input id="password" type="password" name="password" class="form-control form-control-sm" placeholder="Your password"
                 aria-label="Password" autofocus required>
             <div class="btn-group my-1" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-danger mx-1" title="Load" id="load">LD</button>
-                <button type="button" class="btn btn-danger mx-1" title="Save" id="save">SV</button>
-                <button type="button" class="btn btn-danger mx-1" title="Save and Close" id="save-close">SC</button>
-                <button type="button" class="btn btn-danger mx-1" title="Clear" id="clear">CL</button>
-                <button type="button" class="btn btn-dark mx-1" title="Insert DateTime" id="insert-date-time">DT</button>
+                <button type="button" class="btn btn-danger btn-sm mx-1" title="Load" id="load">LD</button>
+                <button type="button" class="btn btn-danger btn-sm mx-1" title="Save" id="save">SV</button>
+                <button type="button" class="btn btn-danger btn-sm mx-1" title="Save and Close" id="save-close">SC</button>
+                <button type="button" class="btn btn-danger btn-sm mx-1" title="Clear" id="clear">CL</button>
+                <button type="button" class="btn btn-dark btn-sm mx-1" title="Insert DateTime" id="insert-date-time">DT</button>
             </div>
           
-            <textarea class="form-control" id="content" name="links" style="height:75vh;"
+            <textarea class="form-control form-control-sm" id="content" name="links" style="height:75vh;"
                 placeholder="Your input note"></textarea>
             <br>
         </div>
@@ -59,7 +59,7 @@
             $("#content").val("");
             $("#password").val("");
         });
-        
+
         $("#password").on('keypress', function (e) {
             if (e.which == 13) {
                 $("#load").click()
@@ -68,7 +68,7 @@
                 return false
             }
         })
-
+        
         $("#save").click(async function (e) {
             if (confirm("WARNING! Notes will be overwritten. Is it OK?")) {
                 console.log("User chooses OK");

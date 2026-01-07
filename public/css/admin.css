@@ -40,7 +40,7 @@ body {
 }
 
 .sidebar-li {
-    padding: 8px 8px 8px 8px;
+    padding: 4px 4px 4px 4px;
     text-decoration: none;
     display: block;
     transition: 0.3s;
@@ -163,7 +163,7 @@ label {
 }
 
 .dashboard-card:hover {
-    transform: translateY(-5px) scale(1.05);
+    transform: translateY(-5px) scale(1.02);
     cursor: pointer;
     /* box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); */
 }

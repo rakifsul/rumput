@@ -2,7 +2,7 @@
     <div class="col-12 col-lg-8">
         <div class="row">
             <div class="col-12 mb-2">
-                <button class="btn btn-dark w-100" data-bs-toggle="modal" data-bs-target="#itemModal">
+                <button class="btn btn-dark btn-sm w-100" data-bs-toggle="modal" data-bs-target="#itemModal">
                     <i class="bi bi-plus-lg"></i> Add Video Embed
                 </button>
             </div>
@@ -13,9 +13,18 @@
         <div class="row g-4" id="dashboardGrid">
             {{#each vdEmbed}}
             <div class="col-12 col-md-6 col-lg-6 dashboard-card" id="{{this.id}}" data-title="{{this.title}}"
-                data-url="{{this.url}}">
+                data-url="{{this.url}}" title="{{this.title}}">
                 <div class="card text-center h-100 border-0 shadow-sm bg-secondary">
-                    <div class="card-body pb-5">
+                    <div class="card-body p-2">
+                        <div class="row mb-1">
+                            <div class="col-6">
+                                <button type="button" class="btn btn-warning btn-sm btn-edit w-100">Edit</button>
+                            </div>
+                            
+                            <div class="col-6">
+                                <button type="button" class="btn btn-danger btn-sm btn-delete w-100">Delete</button>
+                            </div>
+                        </div>
                         <div class="ratio ratio-16x9">
                             <iframe src="{{this.url}}"
                                 title="YouTube video player" frameborder="0"
@@ -75,13 +84,18 @@
         let $currentCard = null;
 
         // Klik kanan pada card
-        $(document).on("contextmenu", ".dashboard-card", function (e) {
+        $(document).on("click", ".btn-edit", function (e) {
             e.preventDefault();
-            $currentCard = $(this);
-
-            $("#contextMenu")
-                .css({ top: e.pageY, left: e.pageX })
-                .show();
+            $currentCard = $(this).parent().parent().parent().parent().parent();
+            
+            $("#vd-embed-edit").click();
+        });
+        
+        $(document).on("click", ".btn-delete", function (e) {
+            e.preventDefault();
+            $currentCard = $(this).parent().parent().parent().parent().parent();
+            
+            $("#vd-embed-delete").click();
         });
 
         // Klik di luar -> tutup menu
@@ -123,9 +137,18 @@
             } else {
                 // Add new card
                 const newCard = $(`
-                    <div class="col-12 col-md-6 col-lg-6 dashboard-card" id="${id}" data-title="${title}" data-url="${url}">
+                    <div class="col-12 col-md-6 col-lg-6 dashboard-card" id="${id}" data-title="${title}" data-url="${url}" title="${title}">
                         <div class="card text-center h-100 border-0 shadow-sm bg-secondary">
-                            <div class="card-body pb-5">
+                            <div class="card-body p-2">
+                                <div class="row mb-1">
+                                    <div class="col-6">
+                                        <button type="button" class="btn btn-warning btn-sm btn-edit w-100">Edit</button>
+                                    </div>
+                                    
+                                    <div class="col-6">
+                                        <button type="button" class="btn btn-danger btn-sm btn-delete w-100">Delete</button>
+                                    </div>
+                                </div>
                                 <div class="ratio ratio-16x9">
                                     <iframe src="${url}"
                                         title="YouTube video player" frameborder="0"

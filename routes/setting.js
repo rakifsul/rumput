@@ -83,6 +83,22 @@ router.delete("/clear-launcher", (req, res) => {
     res.json({ message: "Berhasil didelete" });
 });
 
+router.delete("/clear-trigger", (req, res) => {
+    fs.truncate(global.triggerPath, 0, (err) => {
+        if (err) throw err;
+        console.log("File dikosongkan (async).");
+    });
+    res.json({ message: "Berhasil didelete" });
+});
+
+router.delete("/clear-video", (req, res) => {
+    fs.truncate(global.vdEmbedPath, 0, (err) => {
+        if (err) throw err;
+        console.log("File dikosongkan (async).");
+    });
+    res.json({ message: "Berhasil didelete" });
+});
+
 router.delete("/clear-bookmark", (req, res) => {
     fs.truncate(global.bookmarkPath, 0, (err) => {
         if (err) throw err;
