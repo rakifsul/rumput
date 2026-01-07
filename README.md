@@ -20,6 +20,7 @@ Personal and Multi Purpose Web Dashboard.
 - Triggers
 - Bookmarks
 - Notes
+- Videos
 - Settings
 
 ## More Features
