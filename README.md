@@ -115,6 +115,8 @@ These screenshots show you how to do this.
 
 ![screenshot](./.screenshots/screenshot-5.png "Screenshot")
 
+![screenshot](./.screenshots/screenshot-6.png "Screenshot")
+
 ## Get More Precious Links
 
 - [www.rakifsul.my.id](https://rakifsul.github.io/#https://www.rakifsul.my.id)
