@@ -61,7 +61,16 @@
                     console.log("Data found:", data);
                     $("#results").empty();
                     data.forEach((item) => {
-                        $("#results").append(`<li class="list-group-item"><a href="${item.url}" target="_blank">${item.title}</a></li>`);
+                        $("#results").append(`
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                            <div class="fw-bold"><a href="${item.url}" target="_blank">${item.title}</a></div>
+                            <small>${item.url}</small>
+                            <p>${item.desc}</p>
+                            </div>
+                        </li>
+                        `);
+                        //$("#results").append(`<li class="list-group-item"><a href="${item.url}" target="_blank">${item.title}</a></li>`);
                     })
                 })
                 .catch(err => {

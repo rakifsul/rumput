@@ -117,6 +117,6 @@ These screenshots show you how to do this.
 
 ![screenshot](./.screenshots/screenshot-6.png "Screenshot")
 
-## Get More Precious Links
+## Start Here
 
-- [www.rakifsul.my.id](https://rakifsul.github.io/?ref=github-rumput#https://www.rakifsul.my.id)
+- [https://tinyurl.com/rakifsul](https://tinyurl.com/rakifsul)

@@ -20,12 +20,14 @@ async function parse() {
     $("a").each(async (_, el) => {
         const href = $(el).attr("href");
         const text = $(el).text().trim().replace(/<[^>]*>?/gm, '').slice(0, 200);
+        const desc = $(el).attr("desc") ?? "No description.";
         const add_date = $(el).attr("add_date");
 
         if (href) {
             const obj = {
                 title: text,
                 url: href,
+                desc: desc,
                 add_date: add_date
             };
 
@@ -97,6 +99,7 @@ async function build(results, resultDir) {
     builder.ref("url");
     builder.field("title");
     builder.field("url");
+    builder.field("desc");
 
     const total = results.length;
     results.forEach((doc, counter) => {
