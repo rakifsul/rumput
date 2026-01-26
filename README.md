@@ -117,7 +117,3 @@ These screenshots show you how to do this.
 ![screenshot](./.screenshots/screenshot-5.png "Screenshot")
 
 ![screenshot](./.screenshots/screenshot-6.png "Screenshot")
-
-## Start Here
-
-- [https://tinyurl.com/rakifsul](https://tinyurl.com/rakifsul)
