@@ -11,7 +11,6 @@ Personal and Multi Purpose Web Dashboard.
   - [How to Install or Develop (using Node.js and NPM)](#how-to-install-or-develop-using-nodejs-and-npm)
   - [If You are Using Brave (or any ads blocker)](#if-you-are-using-brave-or-any-ads-blocker)
   - [Screenshot](#screenshot)
-  - [Start Here](#start-here)
 
 ## Features
 
