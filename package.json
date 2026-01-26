@@ -1,6 +1,6 @@
 {
   "name": "rumput",
-  "version": "2026.01.14-1511",
+  "version": "2026.01.27-0143",
   "description": "Personal and Multi Purpose Web Dashboard",
   "main": "index.js",
   "type": "module",

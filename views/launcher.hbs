@@ -12,6 +12,7 @@
                     <li><a class="dropdown-item" id="search-bing" href="javascript:void(0);">Bing</a></li>
                     <li><a class="dropdown-item" id="search-brave" href="javascript:void(0);">Brave</a></li>
                     <li><a class="dropdown-item" id="search-marginalia" href="javascript:void(0);">Marginalia</a></li>
+                    <li><a class="dropdown-item" id="search-8055" href="javascript:void(0);">8055 Engine</a></li>
                 </ul>
             </div>
         </div>
@@ -95,6 +96,7 @@
         $('#search-bing').click(doSearchBing);
         $('#search-brave').click(doSearchBrave);
         $('#search-marginalia').click(doSearchMarginalia);
+        $('#search-8055').click(doSearch8055);
         $(document).on('keypress', function (e) {
             if (e.which == 13) {
                 $(defaultSearch).click()
@@ -213,6 +215,9 @@
     }
     function doSearchMarginalia() {
         window.open(`https://marginalia-search.com/search?query=${$('#query').val()}&profile=corpo`, '_self');
+    }
+    function doSearch8055() {
+        window.open(`https://8055-engine.blogspot.com/#gsc.tab=0&gsc.q=${$('#query').val()}&gsc.sort=`, '_self');
     }
 
     // Simpan data ke backend
