@@ -5,17 +5,17 @@ Personal and Multi Purpose Web Dashboard.
 ## TOC
 - [Rumput](#rumput)
   - [TOC](#toc)
-  - [Features](#features)
-  - [More Features](#more-features)
-  - [How to Install (using Docker)](#how-to-install-using-docker)
-  - [How to Install or Develop (using Node.js and NPM)](#how-to-install-or-develop-using-nodejs-and-npm)
-  - [If You are Using Brave (or any ads blocker)](#if-you-are-using-brave-or-any-ads-blocker)
+  - [Fitur](#fitur)
+  - [Saran Fitur](#saran-fitur)
+  - [Cara Install Menggunakan Docker](#cara-install-menggunakan-docker)
+  - [Cara Install atau Develop Menggunakan Node.js dan NPM](#cara-install-atau-develop-menggunakan-nodejs-dan-npm)
+  - [Jika Anda menggunakan Brave (atau ads blocker lainnya)](#jika-anda-menggunakan-brave-atau-ads-blocker-lainnya)
   - [Screenshot](#screenshot)
 
-## Features
+## Fitur
 
 - Search Box
-  - [new] 8055 Engine
+  - [baru] 8055 Engine
 - URL Launchers
 - Triggers
 - Bookmarks
@@ -23,11 +23,11 @@ Personal and Multi Purpose Web Dashboard.
 - Videos
 - Settings
 
-## More Features
+## Saran Fitur
 
-- Write your suggestions to issue tracker.
+- Tulis saran fitur di issue tracker.
 
-## How to Install (using Docker)
+## Cara Install Menggunakan Docker
 
 Clone repository:
 
@@ -35,7 +35,7 @@ Clone repository:
 git clone https://github.com/rakifsul/rumput.git
 ```
 
-Change directory:
+Ganti directory:
 
 ```
 cd rumput
@@ -47,13 +47,11 @@ Docker compose up:
 docker compose up -d --build
 ```
 
-Visit http://127.0.0.1:7500
+Kunjungi http://127.0.0.1:7500
 
-## How to Install or Develop (using Node.js and NPM)
+## Cara Install atau Develop Menggunakan Node.js dan NPM
 
-Node.js v22.19.0 probably works.
-
-Port 3000 should be free unless it's modified on the env variable.
+Port 3000 harus free kecuali di-set di env variable.
 
 Clone repository:
 
@@ -61,7 +59,7 @@ Clone repository:
 git clone https://github.com/rakifsul/rumput.git
 ```
 
-Change directory:
+Ganti directory:
 
 ```
 cd rumput
@@ -79,29 +77,29 @@ Run:
 npm run dev
 ```
 
-If you want to use different host and port:
+Jika Anda ingin menggunakan host dan port yang berbeda:
 
 ```
 export RUMPUT_HOST=127.0.0.1 && export RUMPUT_PORT=4000 && npm run dev
 ```
 
-## If You are Using Brave (or any ads blocker)
+## Jika Anda menggunakan Brave (atau ads blocker lainnya)
 
-Rumput has option to force autofocus at new opened tab.
+Rumput memiliki pilihan untuk force autofocus pada new opened tab.
 
-This is a little bit tricky if you are using Brave or maybe other ads blocker.
+Ini sedikit merepotkan jika Anda menggunakan Brave atau mungkin ads blocker lainnya.
 
-So, if you are using Brave, **disable the pop up blocker**.
+Jika Anda menggunakan Brave atau ads blocker lainnya, **disable pop up blocker**.
 
-These screenshots show you how to do this.
+Screenshot ini menunjukkan caranya.
 
-**Warning:**
+**Perhatian:**
 
-**It's not recommended to use force autofocus if you set rumput as homepage without giving permission to allow popup. Your browser will close instantly after being launched and it's really complicated to fix.**
+**Sangat tidak disarankan untuk menggunakan force autofocus jika Anda menggunakan rumput sebagai homepage tanpa memberikan izin untuk menjalankan popup. Jika itu dilakukan, maka browser akan tertutup seketika setelah dijalankan dan itu sangat rumit untuk diperbaiki.**
 
-![before](./.screenshots/before.png "Before disabling pop up blocker in Brave")
+![before](./.screenshots/before.png "Sebelum disable pop up blocker di Brave")
 
-![after](./.screenshots/after.png "After disabling pop up blocker in Brave")
+![after](./.screenshots/after.png "Setelah disable pop up blocker di Brave")
 
 ## Screenshot
 
