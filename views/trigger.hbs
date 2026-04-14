@@ -25,7 +25,8 @@
     </div>
     <div class="col-12 col-lg-4 border-separator d-none d-lg-block d-xl-block d-xxl-block">
         <h3 class="text-primary">Info</h3>
-        <p>This is trigger page. You can write JavaScripts and Run it by left clicking the trigger card or using right click menu and then click "Run Trigger".</p>
+        <p>This is trigger page. You can write JavaScripts and Run it by left clicking the trigger card or using right
+            click menu and then click "Run Trigger".</p>
         <p>This feature is using eval to your script input to run the script.</p>
     </div>
 </div>
@@ -45,9 +46,15 @@
                     <label class="form-label">Title</label>
                     <input type="text" class="form-control" id="titleInput" required>
                 </div>
+
                 <div class="mb-3">
                     <label class="form-label">Script</label>
-                    <textarea class="form-control" id="scriptInput" rows="12"
+
+                    <br>
+                    <a href="javascript:void(0);" id="gen-clipboard" class="badge bg-dark">clipboard</a>
+                    <a href="javascript:void(0);" id="gen-alert" class="badge bg-dark">alert</a>
+
+                    <textarea class="form-control mt-1" id="scriptInput" rows="12"
                         placeholder="Write your scripts here..."></textarea>
                 </div>
             </div>
@@ -92,18 +99,18 @@
             $("#scriptInput").val(decodeURIComponent($currentCard.attr("data-script")));
             $("#itemModal").modal("show");
         });
-        $("#trigger-run").click(function (){
-            try{
+        $("#trigger-run").click(function () {
+            try {
                 const scr = decodeURIComponent($currentCard.attr("data-script"));
                 eval(scr);
             } catch (err) {
                 console.log(err)
             }
         })
-        $(".dashboard-card").click(function (){
+        $(".dashboard-card").click(function () {
             const $currentCard1 = $(this);
-            try{
-                
+            try {
+
                 const scr = decodeURIComponent($currentCard1.attr("data-script"));
                 eval(scr);
             } catch (err) {
@@ -156,6 +163,26 @@
 
             await saveTriggersToServer()
         });
+
+        $("#gen-clipboard").click(function () {
+            const thescript =
+                `async function copyText() {
+const text = \`YOUR-TEXT-HERE\`;
+try {
+    await navigator.clipboard.writeText(text);
+    console.log('Text copied to clipboard');
+} catch (err) {
+    console.error('Failed to copy text: ', err);
+}
+}
+copyText()`;
+            $("#scriptInput").val(thescript);
+        })
+
+        $("#gen-alert").click(function () {
+            const thescript = `alert("message")`;
+            $("#scriptInput").val(thescript);
+        })
     })
 
     async function saveTriggersToServer() {

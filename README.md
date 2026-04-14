@@ -106,13 +106,3 @@ These screenshots show you how to do this.
 ## Screenshot
 
 ![screenshot](./.screenshots/screenshot-1.png "Screenshot")
-
-![screenshot](./.screenshots/screenshot-2.png "Screenshot")
-
-![screenshot](./.screenshots/screenshot-3.png "Screenshot")
-
-![screenshot](./.screenshots/screenshot-4.png "Screenshot")
-
-![screenshot](./.screenshots/screenshot-5.png "Screenshot")
-
-![screenshot](./.screenshots/screenshot-6.png "Screenshot")

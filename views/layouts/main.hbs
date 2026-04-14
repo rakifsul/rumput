@@ -12,8 +12,6 @@
 
     <script src="/public/vendor/jquery/jquery.min.js"></script>
     <script src="/public/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    {{!--
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> --}}
 
     <script src="/public/js/admin.js" defer></script>
 
@@ -38,6 +36,12 @@
             </li>
 
             <li class="sidebar-li">
+                <a class="btn btn-outline-light w-100 btn-mobile" data-url="/bookmark" href="/bookmarks"><span
+                        class="elm-visible-mobile">BK</span><span class="elm-visible-desktop">Bookmarks</span>
+                </a>
+            </li>
+            
+            <li class="sidebar-li">
                 <a class="btn btn-outline-light w-100 btn-mobile" data-url="/triggers" href="/triggers"><span
                         class="elm-visible-mobile">TG</span><span class="elm-visible-desktop">Triggers</span>
                 </a>
@@ -49,11 +53,6 @@
                 </a>
             </li>
 
-            <li class="sidebar-li">
-                <a class="btn btn-outline-light w-100 btn-mobile" data-url="/bookmark" href="/bookmarks"><span
-                        class="elm-visible-mobile">BK</span><span class="elm-visible-desktop">Bookmarks</span>
-                </a>
-            </li>
 
             <li class="sidebar-li">
                 <a class="btn btn-outline-light w-100 btn-mobile" data-url="/note" href="/notes"><span
@@ -84,16 +83,6 @@
         <div>
             {{{body}}}
         </div>
-        <!-- Content -->
-        {{!-- <div class="container-fluid px-3">
-            <header>
-                <h1 class="mb-4 text-center">{{header}}</h1>
-            </header>
-            <hr>
-            <div>
-                {{{body}}}
-            </div>
-        </div> --}}
     </div>
 </body>
 
