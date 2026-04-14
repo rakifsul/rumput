@@ -105,4 +105,4 @@ These screenshots show you how to do this.
 
 ## Screenshot
 
-![screenshot](./.screenshots/screenshot-1.png "Screenshot")
+![screenshot](./.screenshots/screenshot-new.png "Screenshot")
