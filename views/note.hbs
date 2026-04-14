@@ -1,16 +1,18 @@
 <div class="row g-4">
     <div class="col-12 col-lg-8">
         <div class="">
-            <input id="password" type="password" name="password" class="form-control form-control-sm" placeholder="Your password"
-                aria-label="Password" autofocus required>
+            <input id="password" type="password" name="password" class="form-control form-control-sm"
+                placeholder="Your password" aria-label="Password" autofocus required>
             <div class="btn-group my-1" role="group" aria-label="Basic example">
                 <button type="button" class="btn btn-danger btn-sm mx-1" title="Load" id="load">LD</button>
                 <button type="button" class="btn btn-danger btn-sm mx-1" title="Save" id="save">SV</button>
-                <button type="button" class="btn btn-danger btn-sm mx-1" title="Save and Close" id="save-close">SC</button>
+                <button type="button" class="btn btn-danger btn-sm mx-1" title="Save and Close"
+                    id="save-close">SC</button>
                 <button type="button" class="btn btn-danger btn-sm mx-1" title="Clear" id="clear">CL</button>
-                <button type="button" class="btn btn-dark btn-sm mx-1" title="Insert DateTime" id="insert-date-time">DT</button>
+                <button type="button" class="btn btn-dark btn-sm mx-1" title="Insert DateTime"
+                    id="insert-date-time">DT</button>
             </div>
-          
+
             <textarea class="form-control form-control-sm" id="content" name="links" style="height:75vh;"
                 placeholder="Your input note"></textarea>
             <br>
@@ -22,10 +24,10 @@
         <p>You can view the notes by entering the password again and click "Load (LD)"</p>
         <p>If you close and reopen this app, then you just need to enter the password and click "Load (LD)".</p>
         <p>To clear both the password and the note temporarily, click "Clear (CL)".</p>
-        
+
         <h3 class="text-danger">WARNING!</h3>
         <p>Don't place important data at Notes because sometimes we modify the codes that causes data loss.</p>
-    </div> 
+    </div>
 </div>
 
 <script>
@@ -68,7 +70,7 @@
                 return false
             }
         })
-        
+
         $("#save").click(async function (e) {
             if (confirm("WARNING! Notes will be overwritten. Is it OK?")) {
                 console.log("User chooses OK");
@@ -138,6 +140,28 @@
             }
 
             $("#content").val(output.content)
+        });
+
+        $(document).on("keydown", function (event) {
+            if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.which == 83) {
+                // Prevent the browser's default save action
+                event.preventDefault();
+
+                // Call your custom save function
+                $("#save-close").click();
+
+                return false;
+            }
+
+            if ((event.ctrlKey || event.metaKey) && event.which == 83) {
+                // Prevent the browser's default save action
+                event.preventDefault();
+
+                // Call your custom save function
+                $("#save").click();
+
+                return false;
+            }
         });
     })
 </script>

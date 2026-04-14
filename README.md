@@ -16,7 +16,6 @@ Personal and Multi Purpose Web Dashboard.
 ## Features
 
 - Search Box
-  - [new] 8055 Engine
 - URL Launchers
 - Triggers
 - Bookmarks
@@ -117,7 +116,3 @@ These screenshots show you how to do this.
 ![screenshot](./.screenshots/screenshot-5.png "Screenshot")
 
 ![screenshot](./.screenshots/screenshot-6.png "Screenshot")
-
-## Start Here
-
-- [https://tinyurl.com/rakifsul](https://tinyurl.com/rakifsul)

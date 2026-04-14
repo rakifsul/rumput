@@ -14,3 +14,9 @@ services:
     volumes:
       - ./data-mount:/usr/src/app/data
       # - /usr/src/app/node_modules
+    networks:
+      - global_network
+      
+networks:
+  global_network:
+    external: true
