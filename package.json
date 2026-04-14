@@ -1,6 +1,6 @@
 {
   "name": "rumput",
-  "version": "2026.01.14-1511",
+  "version": "2026.04.14-1436",
   "description": "Personal and Multi Purpose Web Dashboard",
   "main": "index.js",
   "type": "module",
@@ -9,7 +9,7 @@
     "dev": "nodemon --ignore uploads/ --ignore data/ index.js"
   },
   "keywords": [],
-  "author": "www.rakifsul.my.id",
+  "author": "rakifsul",
   "private": true,
   "dependencies": {
     "bcryptjs": "^3.0.3",
