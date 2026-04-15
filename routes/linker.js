@@ -5,10 +5,10 @@ import fs from 'fs';
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.render("bookmark", {
+    res.render("linker", {
         layout: "main",
-        title: "Rumput - Bookmarks",
-        header: "Bookmarks",
+        title: "Rumput - Linkers",
+        header: "Linkers",
     });
 });
 

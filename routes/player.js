@@ -22,10 +22,10 @@ router.get('/', (req, res) => {
         readyvdEmbed = [];
     }
 
-    res.render("vd-embed", {
+    res.render("player", {
         layout: "main",
-        title: "Rumput - Video Embeds",
-        header: "Video Embeds",
+        title: "Rumput - Players",
+        header: "Players",
         vdEmbed: readyvdEmbed,
     });
 });

@@ -5,6 +5,7 @@ Personal and Multi Purpose Web Dashboard.
 ## TOC
 - [Rumput](#rumput)
   - [TOC](#toc)
+  - [Screenshot](#screenshot)
   - [Features](#features)
   - [More Features](#more-features)
   - [How to Install (using Docker)](#how-to-install-using-docker)
@@ -13,14 +14,18 @@ Personal and Multi Purpose Web Dashboard.
   - [Screenshot](#screenshot)
   - [Start Here](#start-here)
 
+## Screenshot
+
+![screenshot](./.screenshots/screenshot-1.png "Screenshot")
+
 ## Features
 
 - Search Box
 - URL Launchers
 - Triggers
-- Bookmarks
-- Notes
-- Videos
+- Bookmarks (Linkers)
+- Notes (Keepers)
+- Videos (Players)
 - Settings
 
 ## More Features
@@ -102,7 +107,3 @@ These screenshots show you how to do this.
 ![before](./.screenshots/before.png "Before disabling pop up blocker in Brave")
 
 ![after](./.screenshots/after.png "After disabling pop up blocker in Brave")
-
-## Screenshot
-
-![screenshot](./.screenshots/screenshot-new.png "Screenshot")

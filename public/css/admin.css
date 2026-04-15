@@ -158,6 +158,22 @@ label {
 }
 
 /* 4 */
+.dashboard-card-extras {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.dashboard-card-extras:hover {
+    transform: translateY(-5px) scale(1.02);
+    cursor: pointer;
+    /* box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); */
+}
+
+.dashboard-card-extras:active {
+    transform: translateY(5px) scale(1.00);
+    cursor: pointer;
+    /* box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); */
+}
+
 .dashboard-card {
     transition: transform 0.2s, box-shadow 0.2s;
 }

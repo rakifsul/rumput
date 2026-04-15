@@ -2,11 +2,11 @@ import express from 'express';
 import { engine } from 'express-handlebars';
 import path from 'path';
 
-import bookmarkRouter from './routes/bookmark.js';
-import noteRouter from './routes/note.js';
+import linkerRouter from './routes/linker.js';
+import keeperRouter from './routes/keeper.js';
 import launcherRouter from './routes/launcher.js';
-import triggerRouter from './routes/triggers.js';
-import vdEmbedRouter from './routes/vd-embed.js';
+import triggerRouter from './routes/trigger.js';
+import playerRouter from './routes/player.js';
 import settingRouter from './routes/setting.js';
 import redirRouter from './routes/redir.js';
 
@@ -34,11 +34,11 @@ app.set('views', './views');
 app.use("/public", express.static(path.join(__dirname, "public")));
 
 app.use("/settings", settingRouter);
-app.use("/notes", noteRouter);
-app.use("/bookmarks", bookmarkRouter);
+app.use("/keepers", keeperRouter);
+app.use("/linkers", linkerRouter);
 app.use("/launchers", launcherRouter);
 app.use("/triggers", triggerRouter);
-app.use("/vd-embeds", vdEmbedRouter);
+app.use("/players", playerRouter);
 app.get("/", redirRouter);
 
 const port = process.env.RUMPUT_PORT || 3000;

@@ -19,13 +19,13 @@
         </div>
     </div>
     <div class="col-12 col-lg-4 border-separator d-none d-lg-block d-xl-block d-xxl-block">
-        <h3 class="text-primary">Info</h3>
+        <h2 class="text-dark">Helpers</h2>
         <p>Write a note on the textarea, enter the password, then click "Save (SV)" or "Save and Close (SC)".</p>
         <p>You can view the notes by entering the password again and click "Load (LD)"</p>
         <p>If you close and reopen this app, then you just need to enter the password and click "Load (LD)".</p>
         <p>To clear both the password and the note temporarily, click "Clear (CL)".</p>
 
-        <h3 class="text-danger">WARNING!</h3>
+        <h4 class="text-danger">WARNING!</h4>
         <p>Don't place important data at Notes because sometimes we modify the codes that causes data loss.</p>
     </div>
 </div>
@@ -79,7 +79,7 @@
                 const password = $("#password").val();
                 const content = $("#content").val();
 
-                const res = await fetch(`/notes/store`, {
+                const res = await fetch(`/keepers/store`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -103,7 +103,7 @@
                 const password = $("#password").val();
                 const content = $("#content").val();
 
-                const res = await fetch(`/notes/store`, {
+                const res = await fetch(`/keepers/store`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -125,7 +125,7 @@
         $("#load").click(async function (e) {
             const password = $("#password").val();
 
-            const res = await fetch(`/notes/retrieve`, {
+            const res = await fetch(`/keepers/retrieve`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

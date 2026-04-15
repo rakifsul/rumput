@@ -6,10 +6,10 @@ const router = express.Router();
 
 
 router.get('/', (req, res) => {
-    res.render("note", {
+    res.render("keeper", {
         layout: "main",
-        title: "Rumput - Notes",
-        header: "Notes",
+        title: "Rumput - Keepers",
+        header: "Keepers",
     });
 });
 
