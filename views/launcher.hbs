@@ -27,7 +27,7 @@
 </div>
 
 <div class="row g-4">
-    <div class="col-4 col-md-3 col-lg-1 dashboard-card-extras" id="0">
+    <div class="col-4 col-md-3 col-lg-1 dashboard-card-extras" id="0" title="ContextQuery">
         <a href="https://contextq.blogspot.com/#gsc.tab=0" class="text-decoration-none">
             <div class="card text-center h-100 border-0 shadow-sm" style="background-color: black;">
                 <div class="card-body px-0">
@@ -36,7 +36,7 @@
             </div>
         </a>
     </div>
-    <div class="col-4 col-md-3 col-lg-1 dashboard-card-extras" id="0">
+    <div class="col-4 col-md-3 col-lg-1 dashboard-card-extras" id="0" title="Cafeculator">
         <a href="https://cafeculator.blogspot.com" class="text-decoration-none">
             <div class="card text-center h-100 border-0 shadow-sm" style="background-color: black;">
                 <div class="card-body px-0">
@@ -184,12 +184,12 @@
             } else {
                 // Add new card
                 const newCard = $(`
-                    <div class="col-6 col-md-3 col-lg-2 dashboard-card" id="${id}" data-title="${title}" data-link="${link}" data-icon="${icon}" data-icon-color="${iconColor}"
+                    <div class="col-6 col-md-3 col-lg-2 dashboard-card" id="${id}" data-title="${title}" data-link="${link}" data-icon="${icon}" data-icon-color="${iconColor}" title="${title}"
                     draggable="true" ondragstart="dragstartHandler(event)"
                     ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"
                     >
                         <a href="${link}" class="text-decoration-none">
-                            <div class="card text-center h-100 border-0 shadow-sm" style="background-color: {{this.iconColor}};">
+                            <div class="card text-center h-100 border-0 shadow-sm" style="background-color: ${iconColor};">
                                 <div class="card-body">
                                     <i class="display-5" style="color: white;font-style: normal!important;">${icon}</i>
                                     
