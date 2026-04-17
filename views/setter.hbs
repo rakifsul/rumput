@@ -96,7 +96,7 @@
             if (confirm("WARNING! Your launcher links will be removed.")) {
                 console.log("User chooses OK");
 
-                fetch("/settings/clear-launcher", {
+                fetch("/setters/clear-launcher", {
                     method: "DELETE",
                     headers: { "Content-Type": "application/json" }
                 })
@@ -118,7 +118,7 @@
                 console.log("User chooses OK");
 
                 // delete bookmarks
-                fetch("/settings/clear-bookmark", {
+                fetch("/setters/clear-bookmark", {
                     method: "DELETE",
                     headers: { "Content-Type": "application/json" }
                 })
@@ -132,7 +132,7 @@
                     });
 
                 // delete indexes
-                fetch("/settings/clear-index", {
+                fetch("/setters/clear-index", {
                     method: "DELETE",
                     headers: { "Content-Type": "application/json" }
                 })
@@ -152,7 +152,7 @@
         $("#da-note").click(function () {
             if (confirm("WARNING! Your notes will be removed.")) {
                 console.log("User chooses OK");
-                fetch("/settings/clear-note", {
+                fetch("/setters/clear-note", {
                     method: "DELETE",
                     headers: { "Content-Type": "application/json" }
                 })
@@ -173,7 +173,7 @@
             if (confirm("WARNING! Your triggers will be removed.")) {
                 console.log("User chooses OK");
 
-                fetch("/settings/clear-trigger", {
+                fetch("/setters/clear-trigger", {
                     method: "DELETE",
                     headers: { "Content-Type": "application/json" }
                 })
@@ -194,7 +194,7 @@
             if (confirm("WARNING! Your videos will be removed.")) {
                 console.log("User chooses OK");
 
-                fetch("/settings/clear-video", {
+                fetch("/setters/clear-video", {
                     method: "DELETE",
                     headers: { "Content-Type": "application/json" }
                 })
@@ -284,7 +284,7 @@
             formData.append("file", file);
 
             const xhr = new XMLHttpRequest();
-            xhr.open("POST", "/settings/upload-bookmark");
+            xhr.open("POST", "/setters/upload-bookmark");
 
             xhr.upload.onprogress = (event) => {
                 if (event.lengthComputable) {
@@ -298,7 +298,7 @@
                     const resp = JSON.parse(xhr.responseText);
                     console.log("Upload finished:", resp);
 
-                    const res = await fetch(`/settings/parse-bookmark`, {
+                    const res = await fetch(`/setters/parse-bookmark`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ filePath: resp.filePath })
@@ -306,7 +306,7 @@
 
                     // set interval
                     const iv = setInterval(async () => {
-                        const res1 = await fetch(`/settings/progress-check`, {
+                        const res1 = await fetch(`/setters/progress-check`, {
                             method: "GET",
                             headers: { "Content-Type": "application/json" }
                         });
@@ -358,7 +358,7 @@
     async function saveDefaultSearchEngineToServer() {
         const toSave = JSON.stringify(defaultSearchEngine);
         console.log(toSave)
-        fetch("/settings/default-se/save", {
+        fetch("/setters/default-se/save", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: toSave
@@ -375,7 +375,7 @@
     async function saveDefaultAutofocusToServer() {
         const toSave = JSON.stringify(defaultAutofocus);
         console.log(toSave)
-        fetch("/settings/default-af/save", {
+        fetch("/setters/default-af/save", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: toSave

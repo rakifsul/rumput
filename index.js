@@ -7,7 +7,7 @@ import keeperRouter from './routes/keeper.js';
 import launcherRouter from './routes/launcher.js';
 import triggerRouter from './routes/trigger.js';
 import playerRouter from './routes/player.js';
-import settingRouter from './routes/setting.js';
+import setterRouter from './routes/setter.js';
 import redirRouter from './routes/redir.js';
 
 const __dirname = import.meta.dirname;
@@ -33,7 +33,7 @@ app.set('view engine', '.hbs');
 app.set('views', './views');
 app.use("/public", express.static(path.join(__dirname, "public")));
 
-app.use("/settings", settingRouter);
+app.use("/setters", setterRouter);
 app.use("/keepers", keeperRouter);
 app.use("/linkers", linkerRouter);
 app.use("/launchers", launcherRouter);

@@ -44,10 +44,10 @@ router.get('/', (req, res) => {
         };
     }
 
-    res.render("setting", {
+    res.render("setter", {
         layout: "main",
-        title: "Rumput - Settings",
-        header: "Settings",
+        title: "Rumput - Setters",
+        header: "Setters",
         defaultSE: defaultSE.selected,
         defaultAF: defaultAF.selected,
     });
