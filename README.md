@@ -10,9 +10,8 @@ Personal and Multi Purpose Web Dashboard.
   - [More Features](#more-features)
   - [How to Install or Develop (using Docker)](#how-to-install-or-develop-using-docker)
   - [How to Install or Develop (using Node.js and NPM)](#how-to-install-or-develop-using-nodejs-and-npm)
+  - [How to Install on Termux](#how-to-install-on-termux)
   - [If You are Using Brave (or any ads blocker)](#if-you-are-using-brave-or-any-ads-blocker)
-  - [Screenshot](#screenshot)
-  - [Start Here](#start-here)
 
 ## Screenshot
 
@@ -26,7 +25,7 @@ Personal and Multi Purpose Web Dashboard.
 - Bookmarks (Linkers)
 - Notes (Keepers)
 - Videos (Players)
-- Settings
+- Settings (Setters)
 
 ## More Features
 
@@ -89,6 +88,12 @@ If you want to use different host and port:
 ```
 export RUMPUT_HOST=127.0.0.1 && export RUMPUT_PORT=4000 && npm run dev
 ```
+
+## How to Install on Termux
+
+Please refer to: 
+
+https://8055-memos.blogspot.com/2026/04/how-to-install-rumput-on-termux.html
 
 ## If You are Using Brave (or any ads blocker)
 
