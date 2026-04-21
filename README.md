@@ -8,7 +8,7 @@ Personal and Multi Purpose Web Dashboard.
   - [Screenshot](#screenshot)
   - [Features](#features)
   - [More Features](#more-features)
-  - [How to Install (using Docker)](#how-to-install-using-docker)
+  - [How to Install or Develop (using Docker)](#how-to-install-or-develop-using-docker)
   - [How to Install or Develop (using Node.js and NPM)](#how-to-install-or-develop-using-nodejs-and-npm)
   - [If You are Using Brave (or any ads blocker)](#if-you-are-using-brave-or-any-ads-blocker)
   - [Screenshot](#screenshot)
@@ -32,7 +32,7 @@ Personal and Multi Purpose Web Dashboard.
 
 - Write your suggestions to issue tracker.
 
-## How to Install (using Docker)
+## How to Install or Develop (using Docker)
 
 Clone repository:
 
