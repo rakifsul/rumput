@@ -200,10 +200,11 @@ copyText()`;
         });
 
         console.log(trigger)
-        fetch("/trigger/save", {
+        const strTrigger = JSON.stringify({ trigger });
+        fetch("/triggers/save", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ trigger })
+            body: strTrigger
         })
             .then(res => res.json())
             .then(data => {
