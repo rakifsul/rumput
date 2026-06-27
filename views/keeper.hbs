@@ -25,7 +25,8 @@
     </div>
     <div class="col-12 col-lg-4 border-separator d-none d-lg-block d-xl-block d-xxl-block">
         <h2 class="text-dark">Helpers</h2>
-        <p>This is Keepers page. You can write notes here. To edit the notes, right click on the note card, and click edit.</p>
+        <p>This is Keepers page. You can write notes here. To edit the notes, right click on the note card, and click
+            edit.</p>
     </div>
 </div>
 
@@ -117,9 +118,17 @@
         */
 
         $("#trigger-delete").click(async function () {
-            $currentCard.remove();
-            $currentCard = null;
-            await saveTriggersToServer();
+            if (confirm("WARNING! Note will be DELETED. Is it OK?")) {
+                console.log("User chooses OK");
+
+                //
+                $currentCard.remove();
+                $currentCard = null;
+                await saveTriggersToServer();
+            } else {
+                console.log("User chooses Cancel");
+                return;
+            }
         });
 
         // Tombol Tambah → selalu reset ke mode Add
@@ -184,8 +193,8 @@
             console.log(countedId)
             note.push({
                 id: countedId.toString(),
-                title: $(this).data("title"),
-                note: $(this).data("note")
+                title: $(this).data("title").toString(),
+                note: $(this).data("note").toString()
             });
             ++countedId;
         });

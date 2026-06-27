@@ -120,9 +120,17 @@
         })
 
         $("#trigger-delete").click(async function () {
-            $currentCard.remove();
-            $currentCard = null;
-            await saveTriggersToServer();
+            if (confirm("WARNING! Trigger will be DELETED. Is it OK?")) {
+                console.log("User chooses OK");
+
+                //
+                $currentCard.remove();
+                $currentCard = null;
+                await saveTriggersToServer();
+            } else {
+                console.log("User chooses Cancel");
+                return;
+            }
         });
 
         // Tombol Tambah → selalu reset ke mode Add
@@ -194,7 +202,7 @@ copyText()`;
             console.log(countedId)
             trigger.push({
                 id: countedId.toString(),
-                title: $(this).data("title"),
+                title: $(this).data("title").toString(),
                 script: $(this).data("script")
             });
             ++countedId;
