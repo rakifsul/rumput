@@ -14,13 +14,14 @@ router.get('/', (req, res) => {
 
 router.get("/search", (req, res) => {
     const q = req.query.q || "";
+    const mr = req.query.max || "20";
 
     const rawIndex = JSON.parse(fs.readFileSync(global.indexPath));
     const rawBookmarks = JSON.parse(fs.readFileSync(global.bookmarkPath));
 
     const index = lunr.Index.load(rawIndex);
     const results = index.search(q);
-    const limitedResults = results.slice(0, 20);
+    const limitedResults = results.slice(0, parseInt(mr));
     // hasil lunr hanya id, ambil data aslinya
     const finalResults = limitedResults.map(r => {
         const doc = rawBookmarks.find(b => b.url == r.ref);

@@ -2,19 +2,31 @@
     <div class="row">
         <div class="col-12 col-md-6 col-lg-6 mb-2">
             <div class="input-group input-group-sm mb-3">
+                <button id="btn-dummy" class="btn btn-dark btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">Linkers</button>
+                <ul id="res" style="width: stretch;" class="dropdown-menu">
+
+                </ul>
+
                 <input id="query" type="text" placeholder="Type here and enter or click the search engines dropdown..."
                     class="form-control" aria-label="Text input with dropdown button" autocomplete="off" autofocus>
-                <button class="btn btn-dark btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">Search</button>
+
+                <button class="btn btn-dark btn-sm dropdown-toggle" type="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">Global</button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" id="search-google" href="javascript:void(0);">Google</a></li>
                     <li><a class="dropdown-item" id="search-yahoo" href="javascript:void(0);">Yahoo!</a></li>
                     <li><a class="dropdown-item" id="search-ddg" href="javascript:void(0);">DuckDuckGo</a></li>
                     <li><a class="dropdown-item" id="search-bing" href="javascript:void(0);">Bing</a></li>
                     <li><a class="dropdown-item" id="search-brave" href="javascript:void(0);">Brave</a></li>
-                    <li><a class="dropdown-item" id="search-marginalia" href="javascript:void(0);">Marginalia</a></li>
-                    <li><a class="dropdown-item" id="search-contextq" href="javascript:void(0);">ContextQuery</a></li>
+                    <li><a class="dropdown-item" id="search-marginalia" href="javascript:void(0);">Marginalia</a>
+                    </li>
+                    <li><a class="dropdown-item" id="search-contextq" href="javascript:void(0);">ContextQuery</a>
+                    </li>
                 </ul>
+            </div>
+            <div class="input-group input-group-sm mb-3">
+
             </div>
         </div>
         <div class="col-12 col-md-6 col-lg-6 mb-2">
@@ -22,6 +34,8 @@
                 <i class="bi bi-plus-lg"></i> Add Launcher
             </button>
         </div>
+
+
     </div>
 
 </div>
@@ -29,13 +43,14 @@
 <div class="row g-4" id="dashboardGrid">
     {{#each launcher}}
     <div class="col-4 col-md-3 col-lg-1 dashboard-card" id="{{this.id}}" data-title="{{this.title}}"
-        data-link="{{this.url}}" data-icon="{{this.icon}}" data-icon-color="{{this.iconColor}}" title="{{this.title}}"
-        draggable="true" ondragstart="dragstartHandler(event)" ondrop="dropHandler(event)"
-        ondragover="dragoverHandler(event)">
+        data-link="{{this.url}}" data-icon="{{this.icon}}" data-icon-color="{{this.iconColor}}"
+        data-icon-bg-color="{{this.iconBgColor}}" title="{{this.title}}" draggable="true"
+        ondragstart="dragstartHandler(event)" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)">
         <a href="{{this.url}}" class="text-decoration-none">
-            <div class="card text-center h-100 border-0 shadow-sm" style="background-color: {{this.iconColor}};">
+            <div class="card text-center h-100 border-0 shadow-sm" style="background-color: {{this.iconBgColor}};">
                 <div class="card-body px-0">
-                    <i class="display-5" style="color: white;font-style: normal!important;">{{this.icon}}</i>
+                    <i class="display-5"
+                        style="color: {{this.iconColor}};font-style: normal!important;">{{this.icon}}</i>
                 </div>
             </div>
         </a>
@@ -68,8 +83,13 @@
                     <small class="text-muted">Example: Home becomes HO</small>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Alias Background Color</label>
+                    <label class="form-label">Alias Color</label>
                     <input type="text" class="form-control" id="iconColorInput" required>
+                    <small class="text-muted">Example: black, red, white, #ff00ff</small>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Alias Background Color</label>
+                    <input type="text" class="form-control" id="iconBgColorInput" required>
                     <small class="text-muted">Example: black, red, white, #ff00ff</small>
                 </div>
             </div>
@@ -118,6 +138,7 @@
                         $focused === "linkInput" ||
                         $focused === "iconInput" ||
                         $focused === "iconColorInput" ||
+                        $focused === "iconBgColorInput" ||
                         $focused === "submit-launcher" ||
                         $focused === "itemModal"
                     ) {
@@ -134,6 +155,18 @@
             }
         })
 
+        //
+        $("#query").keydown(function () {
+            setTimeout(function () {
+                doLocalSearch()
+                //bootstrap.Dropdown.getOrCreateInstance(document.getElementById("btn-dummy")).show()
+            }, 500)
+
+            /*if (event.key === "Enter") {
+                doLocalSearch()  
+            }*/
+        });
+
         // Tombol Tambah → selalu reset ke mode Add
         $("[data-bs-target='#itemModal']").on("click", function () {
             $currentCard = null;
@@ -147,7 +180,8 @@
             const title = $("#titleInput").val();
             const link = $("#linkInput").val();
             const icon = $("#iconInput").val();
-            const iconColor = $("#iconColorInput").val() ?? "salmon";
+            const iconColor = $("#iconColorInput").val() ?? "white";
+            const iconBgColor = $("#iconBgColorInput").val() ?? "black";
             //alert(title)
 
             if ($currentCard) {
@@ -157,20 +191,21 @@
                 $currentCard.attr("data-link", link);
                 $currentCard.attr("data-icon", icon);
                 $currentCard.attr("data-icon-color", iconColor);
+                $currentCard.attr("data-icon-bg-color", iconBgColor);
                 $currentCard.find("a").attr("href", link);
                 $currentCard.find("i").text(icon);
                 $currentCard.find("h6").text(title);
             } else {
                 // Add new card
                 const newCard = $(`
-                    <div class="col-6 col-md-3 col-lg-2 dashboard-card" id="${id}" data-title="${title}" data-link="${link}" data-icon="${icon}" data-icon-color="${iconColor}" title="${title}"
+                    <div class="col-6 col-md-3 col-lg-2 dashboard-card" id="${id}" data-title="${title}" data-link="${link}" data-icon="${icon}" data-icon-color="${iconColor}" data-icon-bg-color="${iconBgColor}" title="${title}"
                     draggable="true" ondragstart="dragstartHandler(event)"
                     ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"
                     >
                         <a href="${link}" class="text-decoration-none">
-                            <div class="card text-center h-100 border-0 shadow-sm" style="background-color: ${iconColor};">
+                            <div class="card text-center h-100 border-0 shadow-sm" style="background-color: ${iconBgColor};">
                                 <div class="card-body">
-                                    <i class="display-5" style="color: white;font-style: normal!important;">${icon}</i>
+                                    <i class="display-5" style="color: ${iconColor};font-style: normal!important;">${icon}</i>
                                     
                                 </div>
                             </div>
@@ -218,6 +253,7 @@
             $("#linkInput").val($currentCard.attr("data-link"));
             $("#iconInput").val($currentCard.attr("data-icon"));
             $("#iconColorInput").val($currentCard.attr("data-icon-color"));
+            $("#iconBgColorInput").val($currentCard.attr("data-icon-bg-color"));
             $("#itemModal").modal("show");
         });
 
@@ -254,6 +290,35 @@
         window.open(`https://contextq.blogspot.com/#gsc.tab=0&gsc.q=${$('#query').val()}&gsc.sort=`, '_self');
     }
 
+    function doLocalSearch() {
+        const query = $("#query").val();
+        fetch(`/linkers/search?q=${query}&max=10`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Data found:", data);
+
+                $("#res").empty();
+                data.forEach((item) => {
+                    const timestamp = item.add_date;
+                    const date = new Date(timestamp * 1000);
+                    const dateFormat = date.toUTCString(); // `${date.getFullYear()} - ${date.getMonth()+1} - ${date.getDate()}`;
+                    $("#res").append(`
+                        <li><a style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;" class="dropdown-item" href="${item.url}" >${item.title}</a></li>
+                        `);
+                    //$("#results").append(`<li class="list-group-item"><a href="${item.url}" target="_blank">${item.title}</a></li>`);
+                })
+                bootstrap.Dropdown.getOrCreateInstance(document.getElementById("btn-dummy")).show()
+                $("#query").focus();
+            })
+            .catch(err => {
+                console.error("Failed to search:", err);
+                $("#query").focus();
+            });
+    }
+
     // Simpan data ke backend
     async function saveLinksToServer() {
         const launcher = [];
@@ -266,7 +331,8 @@
                 url: $(this).data("link"),
                 title: $(this).data("title"),
                 icon: $(this).data("icon"),
-                iconColor: $(this).data("icon-color")
+                iconColor: $(this).data("icon-color"),
+                iconBgColor: $(this).data("icon-bg-color")
             });
             ++countedId;
         });
@@ -320,6 +386,8 @@
         const targetEl = $("#" + targetId);
 
         if (draggedEl !== targetEl) {
+
+            /*
             let temp = {
                 title: targetEl.attr("data-title"),
                 link: targetEl.attr("data-link"),
@@ -339,6 +407,8 @@
             draggedEl.find("a").attr("href", temp.link);
             draggedEl.find("i").text(temp.icon);
             draggedEl.find("h6").text(temp.title);
+            */
+
 
             await saveLinksToServer();
         }

@@ -1,49 +1,168 @@
 <div class="row g-4">
     <div class="col-12 col-lg-8">
-        <div class="">
-            <input id="password" type="password" name="password" class="form-control form-control-sm"
-                placeholder="Your password" aria-label="Password" autofocus required>
-            <div class="btn-group my-1" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-danger btn-sm mr-1" title="Load" id="load">LD</button>
-                <button type="button" class="btn btn-dark btn-sm mr-1" title="Save" id="save">SV</button>
-                <button type="button" class="btn btn-danger btn-sm mr-1" title="Save and Close"
-                    id="save-close">SC</button>
-                <button type="button" class="btn btn-dark btn-sm mr-1" title="Clear" id="clear">CL</button>
-                <button type="button" class="btn btn-danger btn-sm mr-1" title="Insert DateTime"
-                    id="insert-date-time">DT</button>
+        <div class="row">
+            <div class="col-12 mb-2">
+                <button class="btn btn-dark btn-sm w-100" data-bs-toggle="modal" data-bs-target="#itemModal">
+                    <i class="bi bi-plus-lg"></i> Add Note
+                </button>
             </div>
+        </div>
 
-            <textarea class="form-control form-control-sm" id="content" name="links" style="height:75vh;"
-                placeholder="Your input note"></textarea>
-            <br>
+        <hr>
+
+        <div class="row g-4" id="dashboardGrid">
+            {{#each note}}
+            <div class="col-12 col-md-6 col-lg-6 dashboard-card" id="{{this.id}}" data-title="{{this.title}}"
+                data-note="{{this.note}}">
+                <div class="card text-center h-100 border-0 shadow-sm bg-dark">
+                    <div class="card-body">
+                        <h6 class="mt-3 text-light">{{this.title}}</h6>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
         </div>
     </div>
     <div class="col-12 col-lg-4 border-separator d-none d-lg-block d-xl-block d-xxl-block">
         <h2 class="text-dark">Helpers</h2>
-        <p>Write a note on the textarea, enter the password, then click "Save (SV)" or "Save and Close (SC)".</p>
-        <p>You can view the notes by entering the password again and click "Load (LD)"</p>
-        <p>If you close and reopen this app, then you just need to enter the password and click "Load (LD)".</p>
-        <p>To clear both the password and the note temporarily, click "Clear (CL)".</p>
-
-        <h4 class="text-danger">WARNING!</h4>
-        <p>Don't place important data at Notes because sometimes we modify the codes that causes data loss.</p>
+        <p>This is Keepers page. You can write notes here. To edit the notes, right click on the note card, and click edit.</p>
     </div>
 </div>
 
+<!-- Modal Tambah/Edit -->
+<div class="modal fade" id="itemModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="itemForm" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add / Edit Note</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <input type="hidden" id="editIndex">
+                <div class="mb-3">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-control" id="titleInput" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Note</label>
+
+                    <br>
+                    <a href="javascript:void(0);" id="gen-datetime" class="badge bg-dark">datetime</a>
+
+                    <textarea class="form-control mt-1" id="noteInput" rows="12"
+                        placeholder="Write your notes here..."></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Context Menu -->
+<div id="contextMenu" class="dropdown-menu shadow">
+    <button class="dropdown-item" id="trigger-edit">Edit</button>
+    <button class="dropdown-item text-danger" id="trigger-delete">Delete</button>
+</div>
+
 <script>
-    function stickToBottom() {
-        const ta = document.getElementById('content');
-        const windowHeight = window.innerHeight;
-        const textareaHeight = ta.offsetHeight;
-        ta.style.top = (windowHeight - textareaHeight) + 'px';
-    }
-
-    //
-    window.addEventListener('load', stickToBottom);
-    window.addEventListener('resize', stickToBottom);
-
     $(document).ready(function () {
-        $("#insert-date-time").click(function () {
+
+        let $currentCard = null;
+
+        // Klik kanan pada card
+        $(document).on("contextmenu", ".dashboard-card", function (e) {
+            e.preventDefault();
+            $currentCard = $(this);
+
+            $("#contextMenu")
+                .css({ top: e.pageY, left: e.pageX })
+                .show();
+        });
+
+        // Klik di luar -> tutup menu
+        $(document).click(function () {
+            $("#contextMenu").hide();
+        });
+
+        $("#trigger-edit").click(function () {
+            $("#titleInput").val($currentCard.attr("data-title"));
+            $("#noteInput").val(decodeURIComponent($currentCard.attr("data-note")));
+            $("#itemModal").modal("show");
+        });
+        /*
+        $("#trigger-run").click(function () {
+            try {
+                const scr = decodeURIComponent($currentCard.attr("data-note"));
+                eval(scr);
+            } catch (err) {
+                console.log(err)
+            }
+        })
+        $(".dashboard-card").click(function () {
+            const $currentCard1 = $(this);
+            try {
+
+                const scr = decodeURIComponent($currentCard1.attr("data-note"));
+                eval(scr);
+            } catch (err) {
+                console.log(err)
+            }
+        })
+        */
+
+        $("#trigger-delete").click(async function () {
+            $currentCard.remove();
+            $currentCard = null;
+            await saveTriggersToServer();
+        });
+
+        // Tombol Tambah → selalu reset ke mode Add
+        $("[data-bs-target='#itemModal']").on("click", function () {
+            $currentCard = null;
+            $("#itemForm")[0].reset();
+        });
+        // Tambah/Edit Submit
+        $("#itemForm").on("submit", async function (e) {
+            e.preventDefault();
+            const id = "no-id";//"launcher-" + Date.now();
+            console.log(id)
+            const title = $("#titleInput").val();
+            const note = $("#noteInput").val();
+            console.log(note)
+
+            if ($currentCard) {
+                // Edit existing card.
+                //alert('sdsdfd ' + title)
+                $currentCard.attr("data-title", title);
+                $currentCard.attr("data-note", encodeURIComponent(note));
+            } else {
+                // Add new card
+                const newCard = $(`
+                    <div class="col-12 col-md-6 col-lg-6 dashboard-card" id="${id}" data-title="${title}" data-note="${encodeURIComponent(note)}">
+                        <div class="card text-center h-100 border-0 shadow-sm bg-dark">
+                            <div class="card-body">
+                                <h6 class="mt-3 text-light">${title}</h6>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                $("#dashboardGrid").append(newCard);
+            }
+
+            //$("#itemForm")[0].reset();
+            $("#itemModal").modal("hide");
+            //$currentCard = null;
+
+            await saveTriggersToServer()
+        });
+
+        $("#gen-datetime").click(function () {
             let date = new Date();
             let dateString =
                 date.getFullYear() + "-" +
@@ -52,116 +171,39 @@
                 date.getHours() + ":" +
                 date.getMinutes() + ":" +
                 date.getSeconds();
-
-            $("#content").val($("#content").val() + dateString);
-            $("#content").focus();
-        });
-
-        $("#clear").click(function () {
-            $("#content").val("");
-            $("#password").val("");
-        });
-
-        $("#password").on('keypress', function (e) {
-            if (e.which == 13) {
-                $("#load").click()
-
-                e.preventDefault()
-                return false
-            }
+            const thenote = dateString;
+            $("#noteInput").val($("#noteInput").val() + "\n" + thenote);
         })
-
-        $("#save").click(async function (e) {
-            if (confirm("WARNING! Notes will be overwritten. Is it OK?")) {
-                console.log("User chooses OK");
-
-                //
-                const password = $("#password").val();
-                const content = $("#content").val();
-
-                const res = await fetch(`/keepers/store`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        pass: password,
-                        content: content
-                    })
-                });
-
-                const jsn = await res.json();
-            } else {
-                console.log("User chooses Cancel");
-                return;
-            }
-        });
-
-        $("#save-close").click(async function (e) {
-            if (confirm("WARNING! Notes will be overwritten. Is it OK?")) {
-                console.log("User chooses OK");
-
-                //
-                const password = $("#password").val();
-                const content = $("#content").val();
-
-                const res = await fetch(`/keepers/store`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        pass: password,
-                        content: content
-                    })
-                });
-
-                const jsn = await res.json();
-            } else {
-                console.log("User chooses Cancel");
-                return;
-            }
-
-            $("#content").val("");
-            $("#password").val("");
-        });
-
-        $("#load").click(async function (e) {
-            const password = $("#password").val();
-
-            const res = await fetch(`/keepers/retrieve`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    pass: password
-                })
-            });
-
-            const output = await res.json();
-
-            if (output.error) {
-                alert("WARNING! Password didn't match.")
-            }
-
-            $("#content").val(output.content)
-        });
-
-        $(document).on("keydown", function (event) {
-            if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.which == 83) {
-                // Prevent the browser's default save action
-                event.preventDefault();
-
-                // Call your custom save function
-                $("#save-close").click();
-
-                return false;
-            }
-
-            if ((event.ctrlKey || event.metaKey) && event.which == 83) {
-                // Prevent the browser's default save action
-                event.preventDefault();
-
-                // Call your custom save function
-                $("#save").click();
-
-                return false;
-            }
-        });
     })
+
+    async function saveTriggersToServer() {
+        const note = [];
+        let countedId = 0;
+        $(".dashboard-card").each(function () {
+            //alert($(this).data("title"))
+            console.log(countedId)
+            note.push({
+                id: countedId.toString(),
+                title: $(this).data("title"),
+                note: $(this).data("note")
+            });
+            ++countedId;
+        });
+
+        console.log(note)
+        const strTrigger = JSON.stringify({ note });
+        fetch("/keepers/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: strTrigger
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Data stored:", data);
+                window.location.reload();
+            })
+            .catch(err => {
+                console.error("Failed to save:", err);
+            });
+    }
 </script>

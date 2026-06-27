@@ -26,7 +26,7 @@ router.get('/', (req, res) => {
         layout: "main",
         title: "Rumput - Players",
         header: "Players",
-        vdEmbed: readyvdEmbed,
+        vdEmbed: readyvdEmbed.sort((a, b) => a.title.localeCompare(b.title)),
     });
 });
 

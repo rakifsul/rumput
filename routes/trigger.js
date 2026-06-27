@@ -26,7 +26,7 @@ router.get('/', (req, res) => {
         layout: "main",
         title: "Rumput - Triggers",
         header: "Triggers",
-        trigger: readyTrigger,
+        trigger: readyTrigger.sort((a, b) => a.title.localeCompare(b.title)),
     });
 });
 

@@ -12,9 +12,9 @@
 
         <div class="row g-4" id="dashboardGrid">
             {{#each trigger}}
-            <div class="col-6 col-md-3 col-lg-2 dashboard-card" id="{{this.id}}" data-title="{{this.title}}"
+            <div class="col-12 col-md-6 col-lg-3 dashboard-card" id="{{this.id}}" data-title="{{this.title}}"
                 data-script="{{this.script}}">
-                <div class="card text-center h-100 border-0 shadow-sm bg-secondary">
+                <div class="card text-center h-100 border-0 shadow-sm bg-dark">
                     <div class="card-body">
                         <h6 class="mt-3 text-light">{{this.title}}</h6>
                     </div>
@@ -77,6 +77,7 @@
 
 <script>
     $(document).ready(function () {
+
         let $currentCard = null;
 
         // Klik kanan pada card
@@ -146,8 +147,8 @@
             } else {
                 // Add new card
                 const newCard = $(`
-                    <div class="col-6 col-md-3 col-lg-2 dashboard-card" id="${id}" data-title="${title}" data-script="${encodeURIComponent(script)}">
-                        <div class="card text-center h-100 border-0 shadow-sm bg-secondary">
+                    <div class="col-12 col-md-6 col-lg-3 dashboard-card" id="${id}" data-title="${title}" data-script="${encodeURIComponent(script)}">
+                        <div class="card text-center h-100 border-0 shadow-sm bg-dark">
                             <div class="card-body">
                                 <h6 class="mt-3 text-light">${title}</h6>
                             </div>

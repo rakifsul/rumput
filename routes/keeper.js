@@ -1,44 +1,53 @@
 import express from "express";
-import bcrypt from "bcryptjs";
 import fs from 'fs';
 
 const router = express.Router();
 
-
 router.get('/', (req, res) => {
+    let note;
+    let readyNote = [];
+    try {
+        const rd = fs.readFileSync(global.notePath, "utf-8");
+
+        note = JSON.parse(rd);
+
+        note.forEach(item => {
+            readyNote.push({
+                id: item.id,
+                title: item.title,
+                note: encodeURIComponent(item.note)
+            })
+        });
+    } catch (err) {
+        readyNote = [];
+    }
+
     res.render("keeper", {
         layout: "main",
         title: "Rumput - Keepers",
         header: "Keepers",
+        note: readyNote.sort((a, b) => a.title.localeCompare(b.title)),
     });
 });
 
-router.post("/store", (req, res) => {
-    const { pass, content } = req.body;
-
-    const final = {
-        password: bcrypt.hashSync(pass, 12),
-        data: content
-    };
-
-    fs.writeFileSync(global.notePath, JSON.stringify(final, null, 2));
-
-    res.json(final);
-});
-
-router.post("/retrieve", (req, res) => {
-    try {
-        const { pass } = req.body;
-        const { password, data } = JSON.parse(fs.readFileSync(global.notePath));
-
-        if (!bcrypt.compareSync(pass, password) == true) {
-            throw new Error("Incorrect password.");
-        }
-
-        res.json({ content: data });
-    } catch (err) {
-        res.json({ error: err });
+router.post("/save", (req, res) => {
+    const data = req.body;
+    if (!data.note || !Array.isArray(data.note)) {
+        return res.status(400).json({ error: "Format JSON salah" });
     }
+
+    let readyNote = [];
+    data.note.forEach(item => {
+        readyNote.push({
+            id: item.id,
+            title: item.title,
+            note: decodeURIComponent(item.note)
+        })
+    });
+
+    fs.writeFileSync(global.notePath, JSON.stringify(readyNote, null, 2));
+
+    res.json({ message: "Berhasil disimpan" });
 });
 
 export default router;

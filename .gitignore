@@ -43,6 +43,7 @@ jspm_packages/
 data/*.json
 mount-data/*.json
 data-mount/*.json
+data-mount-2026.06.28-0331/*.json
 uploads/*.html
 
 # Snowpack dependency directory (https://snowpack.dev/)
