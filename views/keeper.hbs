@@ -104,18 +104,15 @@
             } catch (err) {
                 console.log(err)
             }
-        })
-        $(".dashboard-card").click(function () {
-            const $currentCard1 = $(this);
-            try {
+        })*/
 
-                const scr = decodeURIComponent($currentCard1.attr("data-note"));
-                eval(scr);
-            } catch (err) {
-                console.log(err)
-            }
+        $(".dashboard-card").click(function () {
+            $currentCard = $(this);
+            $("#titleInput").val($currentCard.attr("data-title"));
+            $("#noteInput").val(decodeURIComponent($currentCard.attr("data-note")));
+            $("#itemModal").modal("show");
         })
-        */
+        
 
         $("#trigger-delete").click(async function () {
             if (confirm("WARNING! Note will be DELETED. Is it OK?")) {
