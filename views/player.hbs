@@ -12,7 +12,7 @@
 
         <div class="row g-4" id="dashboardGrid">
             {{#each vdEmbed}}
-            <div class="col-12 col-md-6 col-lg-6 dashboard-card" id="{{this.id}}" data-title="{{this.title}}"
+            <div class="col-12 col-md-6 col-lg-6 dashboard-card-extras" id="{{this.id}}" data-title="{{this.title}}"
                 data-url="{{this.url}}" title="{{this.title}}">
                 <div class="card text-center h-100 border-0 shadow-sm bg-secondary">
                     <div class="card-body p-2">
@@ -20,14 +20,13 @@
                             <div class="col-6">
                                 <button type="button" class="btn btn-warning btn-sm btn-edit w-100">Edit</button>
                             </div>
-                            
+
                             <div class="col-6">
                                 <button type="button" class="btn btn-danger btn-sm btn-delete w-100">Delete</button>
                             </div>
                         </div>
                         <div class="ratio ratio-16x9">
-                            <iframe src="{{this.url}}"
-                                title="YouTube video player" frameborder="0"
+                            <iframe src="{{this.url}}" title="YouTube video player" frameborder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                         </div>
@@ -87,15 +86,23 @@
         $(document).on("click", ".btn-edit", function (e) {
             e.preventDefault();
             $currentCard = $(this).parent().parent().parent().parent().parent();
-            
+
             $("#vd-embed-edit").click();
         });
-        
+
         $(document).on("click", ".btn-delete", function (e) {
-            e.preventDefault();
-            $currentCard = $(this).parent().parent().parent().parent().parent();
-            
-            $("#vd-embed-delete").click();
+            if (confirm("WARNING! Video Player will be DELETED. Is it OK?")) {
+                console.log("User chooses OK");
+
+                //
+                e.preventDefault();
+                $currentCard = $(this).parent().parent().parent().parent().parent();
+
+                $("#vd-embed-delete").click();
+            } else {
+                console.log("User chooses Cancel");
+                return;
+            }
         });
 
         // Klik di luar -> tutup menu
@@ -137,7 +144,7 @@
             } else {
                 // Add new card
                 const newCard = $(`
-                    <div class="col-12 col-md-6 col-lg-6 dashboard-card" id="${id}" data-title="${title}" data-url="${url}" title="${title}">
+                    <div class="col-12 col-md-6 col-lg-6 dashboard-card-extras" id="${id}" data-title="${title}" data-url="${url}" title="${title}">
                         <div class="card text-center h-100 border-0 shadow-sm bg-secondary">
                             <div class="card-body p-2">
                                 <div class="row mb-1">
@@ -173,7 +180,7 @@
     async function saveVdEmbedsToServer() {
         const vdEmbed = [];
         let countedId = 0;
-        $(".dashboard-card").each(function () {
+        $(".dashboard-card-extras").each(function () {
             //alert($(this).data("title"))
             console.log(countedId)
             vdEmbed.push({

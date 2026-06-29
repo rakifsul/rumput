@@ -61,7 +61,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button id="save" type="submit" class="btn btn-primary">Save</button>
             </div>
         </form>
     </div>
@@ -93,6 +93,18 @@
         // Klik di luar -> tutup menu
         $(document).click(function () {
             $("#contextMenu").hide();
+        });
+
+        $("#scriptInput").on("keydown", function (event) {
+            if ((event.ctrlKey || event.metaKey) && event.which == 83) {
+                // Prevent the browser's default save action
+                event.preventDefault();
+
+                // Call your custom save function
+                $("#save").click();
+
+                return false;
+            }
         });
 
         $("#trigger-edit").click(function () {
