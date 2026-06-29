@@ -15,7 +15,7 @@ Personal and Multi Purpose Web Dashboard.
 
 ## Screenshot
 
-![screenshot](./.screenshots/screenshot-2.png "Screenshot")
+![screenshot](./.screenshots/screenshot-1.png "Screenshot")
 
 ## Features
 
