@@ -8,6 +8,12 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-12">
+                <input type="text" class="form-control" id="searchBox" placeholder="Search notes...">
+            </div>
+        </div>
+
         <hr>
 
         <div class="row g-4" id="dashboardGrid">
@@ -223,6 +229,24 @@
 
             //$("#noteInput").val($("#noteInput").val() + thenote);
         })
+
+        //
+        let timer;
+
+        $('#searchBox').on('input', function () {
+            clearTimeout(timer);
+
+            timer = setTimeout(() => {
+                const keyword = $('#searchBox').val().toLowerCase().trim();
+
+                $('.dashboard-card').each(function () {
+                    const text = `${$(this).data('title')} ${$(this).data('note')}`
+                        .toLowerCase();
+
+                    $(this).toggleClass('d-none', !text.includes(keyword));
+                });
+            }, 200);
+        });
     })
 
     async function saveTriggersToServer() {

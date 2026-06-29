@@ -12,7 +12,7 @@ services:
       - RUMPUT_HOST=0.0.0.0
       - RUMPUT_PORT=3000
     volumes:
-      - ./data-mount-2026.06.28-0331:/usr/src/app/data
+      - ./data-mount-2026.06.30-0604:/usr/src/app/data
       # - /usr/src/app/node_modules
     networks:
       - global_network

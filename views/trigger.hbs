@@ -8,6 +8,12 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-12">
+                <input type="text" class="form-control" id="searchBox" placeholder="Search triggers...">
+            </div>
+        </div>
+
         <hr>
 
         <div class="row g-4" id="dashboardGrid">
@@ -25,7 +31,7 @@
     </div>
     <div class="col-12 col-lg-4 border-separator d-none d-lg-block d-xl-block d-xxl-block">
         <h2 class="text-dark">Helpers</h2>
-        <p>This is trigger page. You can write JavaScripts and Run it by left clicking the trigger card or using right
+        <p>This is Triggers page. You can write JavaScripts and Run it by left clicking the trigger card or using right
             click menu and then click "Run Trigger".</p>
         <p>This feature is using eval to your script input to run the script.</p>
     </div>
@@ -204,6 +210,24 @@ copyText()`;
             const thescript = `alert("message")`;
             $("#scriptInput").val(thescript);
         })
+
+        //
+        let timer;
+
+        $('#searchBox').on('input', function () {
+            clearTimeout(timer);
+
+            timer = setTimeout(() => {
+                const keyword = $('#searchBox').val().toLowerCase().trim();
+
+                $('.dashboard-card').each(function () {
+                    const text = `${$(this).data('title')} ${$(this).data('note')}`
+                        .toLowerCase();
+
+                    $(this).toggleClass('d-none', !text.includes(keyword));
+                });
+            }, 200);
+        });
     })
 
     async function saveTriggersToServer() {
